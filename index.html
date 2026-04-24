@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Vensar Constructions — Engineering Strength</title>
+<style>/* ============================================================
+   VENSAR CONSTRUCTIONS — SHARED DESIGN SYSTEM
+   "The Architectural Monolith" — Industrial Editorial
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+
+/* ─── TOKENS ─── */
+:root {
+  --navy:        #001f4d;
+  --navy-mid:    #002a68;
+  --navy-light:  #1a3c71;
+  --rust:        #b84000;
+  --amber:       #c94d00;
+  --amber-bright:#e05a00;
+  --amber-dim:   #ffa570;
+  --gold-chip:   #ffddaf;
+  --gold-text:   #3a2000;
+  --surface:     #faf7f6;
+  --surf-low:    #f3eeec;
+  --surf-mid:    #ebe5e4;
+  --surf-high:   #ddd7d6;
+  --ink:         #1a1918;
+  --ink-muted:   #4d4644;
+  --ink-faint:   #8a8280;
+  --white:       #ffffff;
+  --transition:  0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body:    'Barlow', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+}
+
+/* ─── RESET ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--surface);
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; font-family: var(--font-body); border: none; outline: none; }
+input, textarea, select { font-family: var(--font-body); }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--amber); }
+::selection { background: var(--gold-chip); color: var(--gold-text); }
+
+/* ─── MATERIAL SYMBOLS ─── */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* ─── NAVIGATION ─── */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(0, 31, 77, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  transition: background var(--transition);
+}
+.nav.scrolled {
+  background: rgba(0, 20, 55, 0.97);
+}
+.nav-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.nav-logo span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--amber-bright);
+  border-radius: 50%;
+  margin-bottom: 2px;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  transition: color var(--transition);
+  position: relative;
+  padding-bottom: 2px;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; right: 100%;
+  height: 1px;
+  background: var(--amber-bright);
+  transition: right var(--transition);
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { right: 0; }
+.nav-links a.active {
+  color: var(--white);
+}
+.nav-links a.active::after { right: 0; }
+.nav-cta {
+  background: var(--amber);
+  color: var(--white);
+  padding: 0.65rem 1.5rem;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: background var(--transition), transform 0.15s;
+}
+.nav-cta:hover { background: var(--amber-bright); transform: translateY(-1px); }
+.nav-cta:active { transform: translateY(0); }
+
+/* Mobile hamburger */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  padding: 4px;
+}
+.nav-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--white);
+  transition: all 0.3s;
+}
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.nav-mobile {
+  display: none;
+  background: rgba(0,20,55,0.98);
+  padding: 1.5rem 3rem 2rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.nav-mobile.open { display: block; }
+.nav-mobile a {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: color var(--transition);
+}
+.nav-mobile a:hover, .nav-mobile a.active { color: var(--white); }
+.nav-mobile .nav-cta { display: inline-block; margin-top: 1.5rem; }
+
+@media (max-width: 900px) {
+  .nav-links, .nav-cta { display: none; }
+  .nav-toggle { display: flex; }
+}
+
+/* ─── PAGE ENTRY ANIMATION ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideRight {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.anim-fade-up  { animation: fadeUp 0.7s cubic-bezier(0.4,0,0.2,1) both; }
+.anim-fade-in  { animation: fadeIn 0.9s ease both; }
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.22s; }
+.delay-3 { animation-delay: 0.38s; }
+.delay-4 { animation-delay: 0.52s; }
+.delay-5 { animation-delay: 0.68s; }
+
+/* ─── SCROLL REVEAL ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1.visible { transition-delay: 0.1s; }
+.reveal-delay-2.visible { transition-delay: 0.2s; }
+.reveal-delay-3.visible { transition-delay: 0.3s; }
+.reveal-delay-4.visible { transition-delay: 0.4s; }
+
+/* ─── LAYOUT HELPERS ─── */
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 3rem;
+}
+@media (max-width: 768px) { .container { padding: 0 1.5rem; } }
+
+/* ─── SECTION LABEL ─── */
+.section-label {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber-bright);
+  margin-bottom: 1rem;
+}
+.section-label.light { color: var(--amber-dim); }
+
+/* ─── BUTTONS ─── */
+.btn-primary {
+  display: inline-block;
+  background: var(--amber);
+  color: var(--white);
+  padding: 1rem 2.5rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: background var(--transition), transform 0.15s;
+}
+.btn-primary:hover { background: var(--amber-bright); transform: translateY(-2px); }
+.btn-ghost {
+  display: inline-block;
+  background: transparent;
+  color: var(--white);
+  padding: 1rem 2.5rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.3);
+  transition: background var(--transition), border-color var(--transition);
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.6); }
+.btn-outline {
+  display: inline-block;
+  background: transparent;
+  color: var(--navy);
+  padding: 1rem 2.5rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid var(--navy);
+  transition: background var(--transition), color var(--transition);
+}
+.btn-outline:hover { background: var(--navy); color: var(--white); }
+
+/* ─── CHIP ─── */
+.chip {
+  display: inline-block;
+  background: var(--gold-chip);
+  color: var(--gold-text);
+  padding: 0.3rem 0.9rem;
+  border-radius: 99px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ─── STAT BAR ─── */
+.stat-row {
+  display: flex;
+  gap: 4rem;
+  flex-wrap: wrap;
+}
+.stat-item {
+  border-left: 2px solid var(--amber-bright);
+  padding-left: 1.25rem;
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-top: 0.35rem;
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  background: #000e2a;
+  padding: 5rem 0 2.5rem;
+}
+.footer-duns {
+  margin-top: 1.5rem;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 3rem;
+  padding-bottom: 3.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+@media (max-width: 1024px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; } }
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+.footer-brand-dot {
+  width: 6px; height: 6px;
+  background: var(--amber-bright);
+  border-radius: 50%;
+  margin-bottom: 2px;
+}
+.footer-tagline {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.7;
+  max-width: 280px;
+  margin-bottom: 2rem;
+}
+.footer-social {
+  display: flex;
+  gap: 0.75rem;
+}
+.footer-social a {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.4);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  transition: all var(--transition);
+}
+.footer-social a:hover {
+  border-color: var(--amber-bright);
+  color: var(--amber-bright);
+}
+.footer-col-title {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber-bright);
+  margin-bottom: 1.5rem;
+}
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.footer-links a {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  transition: color var(--transition);
+}
+.footer-links a:hover { color: var(--white); }
+.footer-address {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+.footer-contact a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 0.6rem;
+  transition: color var(--transition);
+}
+.footer-contact a:hover { color: var(--amber-dim); }
+.footer-contact .material-symbols-outlined { font-size: 1rem; }
+.footer-bottom {
+  padding-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-copy {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+}
+.footer-legal {
+  display: flex;
+  gap: 1.5rem;
+}
+.footer-legal a {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+  transition: color var(--transition);
+}
+.footer-legal a:hover { color: rgba(255,255,255,0.5); }
+
+/* ─── STATUS BADGE ─── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+.status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Vensar logo update */
+.nav-logo { width: 190px; background: rgba(255,255,255,0.96); padding: 0.35rem 0.55rem; border-radius: 2px; gap: 0; }
+.nav-logo img { display: block; width: 100%; height: auto; }
+.nav-logo span { display: none; }
+.footer-brand-logo { background: rgba(255,255,255,0.95); padding: 0.45rem 0.65rem; width: 210px; }
+.footer-brand-logo img { display: block; width: 100%; height: auto; }
+.footer-duns { margin-top: 1.2rem; }
+@media (max-width: 520px) { .nav-logo { width: 158px; } }
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-end;
+  background: var(--navy);
+  overflow: hidden;
+  padding-bottom: 6rem;
+}
+.hero-carousel {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hero-carousel-slides {
+  position: absolute;
+  inset: 0;
+}
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.hero-slide.is-active {
+  opacity: 1;
+}
+
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.hero-parallax {
+  width: 100%; height: 115%;
+  object-fit: cover;
+  opacity: 0.35;
+  mix-blend-mode: luminosity;
+  will-change: transform;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, var(--navy) 35%, rgba(0,31,77,0.55) 70%, transparent 100%);
+}
+.hero-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 180px;
+}
+.hero-content {
+  position: relative;
+  z-index: 10;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+.hero-eyebrow-line {
+  width: 36px;
+  height: 1px;
+  background: var(--amber-bright);
+}
+.hero-eyebrow-text {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber-dim);
+}
+.hero-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 8vw, 7.5rem);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  text-transform: uppercase;
+  max-width: 820px;
+  margin-bottom: 2rem;
+}
+.hero-h1 em {
+  font-style: normal;
+  color: var(--amber-dim);
+  display: block;
+}
+.hero-sub {
+  max-width: 500px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 5rem;
+}
+.hero-stats {
+  display: flex;
+  gap: 3.5rem;
+  flex-wrap: wrap;
+  padding-top: 3rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.hero-badge {
+  position: absolute;
+  top: 50%;
+  right: 6rem;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+.hero-badge-inner {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  text-align: center;
+  gap: 0.2rem;
+}
+.hero-badge-num {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.hero-badge-label {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 3rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  writing-mode: vertical-lr;
+  cursor: default;
+}
+.hero-scroll::before {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(to bottom, var(--amber-bright), transparent);
+  margin-bottom: 0.5rem;
+}
+@media (max-width: 900px) {
+  .hero-badge, .hero-scroll { display: none; }
+  .hero { padding-bottom: 4rem; }
+}
+
+/* ── ABOUT ── */
+.about {
+  padding: 8rem 0;
+  background: var(--surface);
+  overflow: hidden;
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 6rem;
+  align-items: center;
+}
+@media (max-width: 900px) { .about-grid { grid-template-columns: 1fr; gap: 3rem; } }
+.about-img-wrap {
+  position: relative;
+}
+.about-img {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  filter: grayscale(0.3);
+  transition: filter 0.8s;
+}
+.about-img:hover { filter: grayscale(0); }
+.about-img-accent {
+  position: absolute;
+  bottom: -2rem;
+  right: -2rem;
+  width: 180px;
+  height: 180px;
+  background: var(--amber);
+  opacity: 0.12;
+  z-index: -1;
+}
+.about-img-tag {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  background: var(--navy);
+  color: var(--white);
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.about-img-tag-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+}
+.about-img-tag-label {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+.about-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--navy);
+  line-height: 1.05;
+  margin-bottom: 1.5rem;
+}
+.about-body {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--ink-muted);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+.about-highlights {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 2.5rem 0;
+}
+.about-highlight {
+  padding: 1.25rem;
+  background: var(--surf-low);
+  border-left: 2px solid var(--amber);
+}
+.about-highlight-title {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.35rem;
+}
+.about-highlight-text {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  line-height: 1.5;
+}
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--navy);
+  border-bottom: 1px solid var(--navy);
+  padding-bottom: 1px;
+  transition: gap var(--transition), color var(--transition);
+}
+.text-link:hover { gap: 0.9rem; color: var(--amber); border-color: var(--amber); }
+.text-link .material-symbols-outlined { font-size: 1rem; }
+
+/* ── EXPERTISE ── */
+.expertise {
+  padding: 8rem 0;
+  background: var(--surf-low);
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 4rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: var(--navy);
+  line-height: 0.9;
+}
+.expertise-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5px;
+  background: var(--surf-mid);
+}
+@media (max-width: 1200px) { .expertise-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 900px) { .expertise-grid { grid-template-columns: 1fr; gap: 1px; } }
+.expertise-card {
+  background: var(--surface);
+  padding: 3rem 2.5rem;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: background var(--transition);
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+}
+.expertise-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 0;
+  background: var(--navy);
+  transition: height 0.5s cubic-bezier(0.4,0,0.2,1);
+  z-index: 0;
+}
+.expertise-card:hover::before { height: 100%; }
+.expertise-card > * { position: relative; z-index: 1; }
+.expertise-icon {
+  font-size: 2.25rem;
+  color: var(--amber-bright);
+  margin-bottom: 1.5rem;
+  transition: color var(--transition);
+}
+.expertise-card:hover .expertise-icon { color: var(--amber-dim); }
+.expertise-card-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--navy);
+  margin-bottom: 1rem;
+  transition: color var(--transition);
+}
+.expertise-card:hover .expertise-card-title { color: var(--white); }
+.expertise-card-text {
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--ink-muted);
+  line-height: 1.7;
+  transition: color var(--transition);
+}
+.expertise-card:hover .expertise-card-text { color: rgba(255,255,255,0.6); }
+.expertise-card-footer {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.expertise-count {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  transition: color var(--transition);
+}
+.expertise-card:hover .expertise-count { color: rgba(255,255,255,0.3); }
+.expertise-arrow {
+  width: 36px; height: 36px;
+  border: 1px solid var(--surf-high);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-muted);
+  transition: all var(--transition);
+}
+.expertise-card:hover .expertise-arrow {
+  border-color: var(--amber-bright);
+  color: var(--amber-bright);
+}
+.expertise-card:hover .expertise-arrow .material-symbols-outlined {
+  transform: translate(2px, -2px);
+}
+.expertise-bg-icon {
+  position: absolute;
+  bottom: -1rem;
+  right: -1rem;
+  font-size: 9rem;
+  color: var(--navy);
+  opacity: 0.04;
+  z-index: 0;
+  transition: opacity var(--transition);
+  pointer-events: none;
+}
+.expertise-card:hover .expertise-bg-icon { opacity: 0.08; color: var(--white); }
+
+/* ── CTA BAND ── */
+.cta-band {
+  padding: 7rem 0;
+  background: var(--navy);
+  position: relative;
+  overflow: hidden;
+}
+.cta-band-bg {
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='2' cy='2' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+}
+.cta-band-accent {
+  position: absolute;
+  top: 0; right: 0;
+  width: 35%;
+  height: 100%;
+  background: linear-gradient(135deg, transparent, rgba(201,77,0,0.08));
+  clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+}
+.cta-band-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.cta-band-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  line-height: 0.9;
+  margin-bottom: 1.5rem;
+}
+.cta-band-title em {
+  font-style: italic;
+  color: var(--amber-dim);
+}
+.cta-band-sub {
+  font-size: 1rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.45);
+  max-width: 500px;
+  line-height: 1.7;
+  margin-bottom: 3rem;
+}
+.cta-band-btns {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ── TESTIMONIAL ── */
+.testimonials {
+  padding: 8rem 0;
+  background: var(--surface);
+}
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 4rem;
+}
+@media (max-width: 900px) { .testimonials-grid { grid-template-columns: 1fr; } }
+.testimonial-card {
+  background: var(--surf-low);
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.testimonial-quote {
+  font-size: 2rem;
+  color: var(--amber-bright);
+  line-height: 1;
+  font-family: var(--font-display);
+  font-weight: 900;
+}
+.testimonial-text {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--ink-muted);
+  line-height: 1.75;
+  flex: 1;
+}
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-top: 1px solid var(--surf-mid);
+  padding-top: 1.25rem;
+}
+.testimonial-avatar {
+  width: 44px; height: 44px;
+  background: var(--navy);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--white);
+  flex-shrink: 0;
+}
+.testimonial-name {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--navy);
+  letter-spacing: 0.05em;
+}
+.testimonial-role {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  margin-top: 0.15rem;
+}
+
+/* ── CLIENTS ── */
+.clients {
+  padding: 5rem 0;
+  background: var(--surf-low);
+  border-top: 1px solid var(--surf-mid);
+}
+.clients-label {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 2.5rem;
+}
+.clients-row {
+  display: flex;
+  gap: 4rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.client-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--surf-high);
+  transition: color var(--transition);
+}
+.client-name:hover { color: var(--ink-muted); }
+</style>
+<link href="styles.css" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="assets/brand/vensar-logo.png" alt="Vensar"/></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="clients.html">Clients</a></li>
+      <li><a href="safety.html">Safety</a></li>
+      <li><a href="terms.html">Terms</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="contact.html" class="nav-cta">Request Quote</a>
+    <button class="nav-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-mobile">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="projects.html">Projects</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="clients.html">Clients</a>
+    <a href="safety.html">Safety</a>
+    <a href="terms.html">Terms</a>
+    <a href="contact.html" class="nav-cta">Request Quote</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero hero-carousel">
+  <div class="hero-carousel-slides">
+    <div class="hero-slide is-active" data-title="Specialized in the development of sustainable infrastructure and" data-accent="building constructions" data-copy="Vensar is promoted by qualified, experienced and dedicated people and has earned high accolades for competence, dedication and quality over the past 25 years.">
+      <img src="assets/slider/image_slider.jpg" alt="Vensar infrastructure project hero"/>
+    </div>
+    <div class="hero-slide" data-title="Skilled and experienced in all aspects of" data-accent="Infrastructure" data-copy="We pride ourselves on our expertise in buildings, tunnelling, roads and electrical lines, supported by flexible project management systems for a wide range of clients.">
+      <img src="assets/slider/image_slider2.jpg" alt="Vensar project site hero"/>
+    </div>
+    <div class="hero-slide" data-title="Technology-driven growth with" data-accent="cost-effective solutions" data-copy="Keeping abreast with the latest has been our cornerstone, helping Vensar embrace change, diversify operations and continue delivering value-driven construction outcomes.">
+      <img src="assets/slider/image_slider3.jpg" alt="Vensar bridge and infrastructure hero"/>
+    </div>
+  </div>
+  <div class="hero-carousel-overlay"></div>
+  <div class="hero-content container">
+    <div class="hero-caption-panel anim-fade-up">
+      <p class="hero-caption-kicker">Vensar Constructions</p>
+      <h1 class="hero-h1" id="hero-title">Specialized in the development of infrastructure and <em>building constructions</em></h1>
+      <p class="hero-sub" id="hero-copy">Vensar is promoted by qualified, experienced and dedicated people and has earned high accolades for competence, dedication and quality over the past 25 years.</p>
+      <div class="hero-actions">
+        <a href="projects.html" class="btn-primary">View Projects</a>
+        <a href="services.html" class="btn-ghost hero-ghost">Our Business</a>
+      </div>
+      <div class="hero-dots" aria-label="Hero slides">
+        <button class="hero-dot is-active" data-slide="0" aria-label="Slide 1"></button>
+        <button class="hero-dot" data-slide="1" aria-label="Slide 2"></button>
+        <button class="hero-dot" data-slide="2" aria-label="Slide 3"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ── -->
+<section class="stats-board">
+  <div class="container">
+    <div class="stats-board-grid reveal">
+      <article class="stats-board-item">
+        <span class="stats-board-label">Company Legacy</span>
+        <strong>Since 25+ Years</strong>
+      </article>
+      <article class="stats-board-item">
+        <span class="stats-board-label">Development Focus</span>
+        <strong>Sustainable Infrastructure</strong>
+      </article>
+      <article class="stats-board-item">
+        <span class="stats-board-label">Core Work</span>
+        <strong>Building Constructions</strong>
+      </article>
+      <article class="stats-board-item">
+        <span class="stats-board-label">Reputation</span>
+        <strong>Quality Service</strong>
+      </article>
+      <article class="stats-board-item">
+        <span class="stats-board-label">Delivery Standard</span>
+        <strong>On-Time Execution</strong>
+      </article>
+      <article class="stats-board-item">
+        <span class="stats-board-label">Commercial Value</span>
+        <strong>Competitive Price</strong>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ── BUSINESS SHOWCASE ── -->
+<section class="business-showcase">
+  <div class="container business-showcase-grid">
+    <aside class="business-menu reveal">
+      <button class="business-menu-item is-active" data-business-title="Roads &amp; Highways" data-business-copy="Undertaking all types of civil, electrical and mechanical works including infrastructure like highway projects, irrigation projects, sanitation and sewerage, water supply, gas pipelines and railway projects." data-image-a="assets/gallery/gallery-highway.jpg" data-image-b="assets/gallery/gallery-tuunel.jpeg">
+        <span class="material-symbols-outlined">add_road</span>
+        <span>Roads &amp; Highways</span>
+      </button>
+      <button class="business-menu-item" data-business-title="Rails &amp; Metro" data-business-copy="We are skilled and experienced in all aspects of infrastructure especially in buildings, tunnelling, roads and electrical lines, supported by qualified teams and flexible project management systems." data-image-a="assets/gallery/gallery-railway.jpg" data-image-b="assets/slider/gallery-railway2.jpg">
+        <span class="material-symbols-outlined">train</span>
+        <span>Rails &amp; Metro</span>
+      </button>
+      <button class="business-menu-item" data-business-title="Industrial Buildings" data-business-copy="We undertake a variety of projects for a wide range of clientele, from private developments to large government projects, while ensuring a positive outcome regardless of size or nature." data-image-a="assets/gallery/gallery-building.jpg" data-image-b="assets/slider/gallery-building.jpeg">
+        <span class="material-symbols-outlined">factory</span>
+        <span>Industrial Buildings</span>
+      </button>
+      <button class="business-menu-item" data-business-title="Irrigation &amp; Water" data-business-copy="Being a technology-driven organisation and keeping abreast with the latest has been our cornerstone, helping Vensar rapidly ascend to higher levels and diversify into newer areas of operation." data-image-a="assets/slider/irrigation.jpeg" data-image-b="assets/slider/irrigation2.jpeg">
+        <span class="material-symbols-outlined">water_drop</span>
+        <span>Irrigation &amp; Water</span>
+      </button>
+      <button class="business-menu-item" data-business-title="Mining &amp; Power" data-business-copy="Our flexible project management systems, tunnelling and infrastructure expertise and passion to succeed enable us to keep creating cost-effective solutions for clients across sectors." data-image-a="assets/gallery/gallery-mining.jpg" data-image-b="assets/slider/gallery-power3.jpg">
+        <span class="material-symbols-outlined">construction</span>
+        <span>Mining &amp; Power</span>
+      </button>
+    </aside>
+
+    <div class="business-display reveal reveal-delay-1">
+      <span class="section-label business-section-label">Our Projects</span>
+      <h2 class="business-display-title" id="business-title">Roads &amp; Highways</h2>
+      <p class="business-display-copy" id="business-copy">Undertaking all types of civil, electrical and mechanical works including infrastructure like highway projects, irrigation projects, sanitation and sewerage, water supply, gas pipelines and railway projects.</p>
+      <div class="business-display-media">
+        <img id="business-image-a" src="assets/gallery/gallery-highway.jpg" alt="Roads &amp; Highways image 1"/>
+        <img id="business-image-b" src="assets/slider/gallery-highway.jpeg" alt="Roads &amp; Highways image 2"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CLIENTS ── -->
+<section class="clients-panel">
+  <div class="container">
+    <div class="clients-panel-grid reveal">
+      <div class="clients-panel-title">
+        <span class="clients-panel-accent"></span>
+        <h2>Our Prestigious<br/>Clients</h2>
+      </div>
+      <div class="clients-panel-logos">
+        <img src="assets/clients/client-jsw.jpg" alt="JSW"/>
+        <img src="assets/clients/client-sbi.jpg" alt="SBI"/>
+        <img src="assets/clients/client-dmrc.jpg" alt="DMRCL"/>
+        <img src="assets/clients/client-nhpc.jpg" alt="NHPC"/>
+        <img src="assets/clients/client-kptcl.jpg" alt="KPTCL"/>
+        <img src="assets/clients/client-konkan-railway.jpg" alt="Konkan Railway"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NEWS ── -->
+<section class="news-preview">
+  <div class="container news-preview-grid">
+    <div class="news-preview-intro reveal">
+      <span class="section-label">Company</span>
+      <h2 class="news-preview-title">Vensar Constructions</h2>
+      <p class="news-preview-copy">Vensar Constructions Company is promoted by qualified, experienced and dedicated people committed to innovation and excellence in every project we take up.</p>
+    </div>
+    <div class="news-preview-cards">
+      <article class="news-card reveal">
+        <h3>Our Vision</h3>
+        <p>Vensar Constructions Company is promoted by qualified, experienced and dedicated people who are committed to innovation and excellence in every project we take up. We have earned high accolades for our competence, dedication and quality with a reputation for delivering a quality service, on time, and at a competitive price.</p>
+      </article>
+      <article class="news-card reveal reveal-delay-1">
+        <h3>What Drives Us</h3>
+        <p>Our work is guided by disciplined planning, sustainable infrastructure thinking, resource optimization and dependable execution that helps clients move from concept to delivery with confidence.</p>
+        <span>Innovation, quality and accountability</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ── LEADERSHIP ── -->
+<section class="leadership-section">
+  <div class="container">
+    <div class="leadership-section-intro reveal">
+      <span class="section-label">Leadership</span>
+      <h2 class="leadership-section-title">A note from the Managing Director on Vensar&apos;s growth, values and long-term direction.</h2>
+    </div>
+
+    <article class="md-note-card reveal">
+      <div class="md-note-content">
+        <span class="leadership-kicker">Managing Director&apos;s Note</span>
+        <h3>K. Jairam</h3>
+        <p class="leadership-role">Managing Director, Vensar Constructions</p>
+        <div class="md-note-message">
+          <p><strong>We are 25 years and still counting.</strong> We are glad to have reached a new milestone in our business. Even through challenging times, including the impact of the COVID period, we remained confident that India&apos;s infrastructure-led growth would create resilience, opportunity and large-scale employment.</p>
+          <p>Enhanced public investment, new developments and infrastructure expansion continue to create the right environment for progress. At Vensar, the true drivers of that progress are our people, and our continued focus has been on protecting their wellbeing while sustaining strong delivery standards across projects.</p>
+          <p>Our strategic imperative is to move beyond supplying items and instead provide complete solutions to end users. We will continue to serve clients with quality work, dependable service and uncompromising integrity. Honesty, collaboration, competency, creativity and respect have defined Vensar from the beginning, and our vision remains to deliver a customer experience second to none.</p>
+        </div>
+        <div class="md-note-bio">
+          <p>K. Jairam is an engineering graduate whose career journey spans global exposure, business analysis and large-scale automotive leadership before his full-time move into infrastructure and construction. After gaining international experience in the US and working in business analysis for Wells Fargo, he returned to India and helped expand the family&apos;s automotive group across multiple leading brands.</p>
+          <p>Today, Mr. Jairam operates more than 100 car showrooms and workshops across Telangana, Andhra Pradesh, Tamil Nadu and Karnataka. Since joining Vensar Constructions in 2017, he has accelerated the company&apos;s entrepreneurial growth in infrastructure and construction, earning recognition through awards such as the Brand Slam Leadership Award and the Concrete Leadership Award.</p>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ── CTA BAND ── -->
+<section class="cta-band homepage-cta">
+  <div class="container cta-band-inner">
+    <h2 class="cta-band-title reveal">Build the next<br/><em>critical assignment</em></h2>
+    <p class="cta-band-sub reveal reveal-delay-1">Connect with Vensar for infrastructure, industrial, rail, metro and public-sector projects delivered with practical site control.</p>
+    <div class="cta-band-btns reveal reveal-delay-2">
+      <a href="contact.html" class="btn-primary">Contact Team</a>
+      <a href="services.html" class="btn-ghost">View Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand footer-brand-logo"><img src="assets/brand/vensar-logo.png" alt="Vensar"/></div>
+        <p class="footer-tagline">Civil infrastructure, buildings, industrial works and development projects delivered with disciplined planning, safety-led execution and dependable site control.</p>
+        <div class="footer-social"><a href="#">LI</a><a href="#">IG</a><a href="#">TW</a></div>
+        <div class="footer-duns"><script language="JavaScript" src="https://dunsregistered.dnb.com" type="text/javascript"></script></div>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigate</div>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="clients.html">Clients</a></li>
+          <li><a href="safety.html">Safety</a></li>
+          <li><a href="terms.html">Terms</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Core Work</div>
+        <ul class="footer-links">
+          <li><a href="services.html">Civil Infrastructure</a></li>
+          <li><a href="services.html">Rail &amp; Metro</a></li>
+          <li><a href="services.html">Power &amp; Mining</a></li>
+          <li><a href="safety.html">EHS Controls</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Corporate Office</div>
+        <p class="footer-address">8-2-12/76/1/B, 3rd Floor<br/>Ashoka Hitech Chambers, Road No 2<br/>Banjara Hills, Hyderabad - 500034</p>
+        <div class="footer-contact">
+          <a href="tel:+9104023551699"><span class="material-symbols-outlined">call</span>+91 040 23551699</a>
+          <a href="mailto:info@vensar.com"><span class="material-symbols-outlined">mail</span>info@vensar.com</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Vensar Constructions. All Rights Reserved.</span>
+      <div class="footer-legal"><a href="terms.html">Terms</a><a href="#">Accessibility</a><a href="#">Cookies</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>/* vensar.js — shared across all pages */
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ── Nav scroll shadow ── */
+  const nav = document.querySelector('.nav');
+  if (nav) {
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+  }
+
+  /* ── Mobile nav toggle ── */
+  const toggle = document.querySelector('.nav-toggle');
+  const mobileNav = document.querySelector('.nav-mobile');
+  if (toggle && mobileNav) {
+    toggle.addEventListener('click', () => {
+      toggle.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+    // close on link click
+    mobileNav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        toggle.classList.remove('open');
+        mobileNav.classList.remove('open');
+      });
+    });
+  }
+
+  /* ── Active nav link ── */
+  const current = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-links a, .nav-mobile a').forEach(a => {
+    const href = a.getAttribute('href');
+    if (href === current) a.classList.add('active');
+  });
+
+  /* ── Scroll reveal ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* ── Counter animation ── */
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
+
+  function animateCounter(el) {
+    const target = parseFloat(el.dataset.count);
+    const suffix = el.dataset.suffix || '';
+    const prefix = el.dataset.prefix || '';
+    const decimals = el.dataset.decimals ? parseInt(el.dataset.decimals) : 0;
+    const duration = 1400;
+    const start = performance.now();
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = (target * eased).toFixed(decimals);
+      el.textContent = prefix + value + suffix;
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+
+  /* ── Home hero carousel ── */
+  const heroSlides = Array.from(document.querySelectorAll('.hero-slide'));
+  const heroDots = Array.from(document.querySelectorAll('.hero-dot'));
+  const heroTitle = document.getElementById('hero-title');
+  const heroCopy = document.getElementById('hero-copy');
+  let heroIndex = 0;
+  let heroTimer = null;
+
+  function setHeroSlide(index) {
+    if (!heroSlides.length || !heroDots.length || !heroTitle || !heroCopy) return;
+
+    heroIndex = (index + heroSlides.length) % heroSlides.length;
+    const activeSlide = heroSlides[heroIndex];
+    heroSlides.forEach((slide, slideIndex) => {
+      slide.classList.toggle('is-active', slideIndex === heroIndex);
+    });
+    heroDots.forEach((dot, dotIndex) => {
+      dot.classList.toggle('is-active', dotIndex === heroIndex);
+    });
+    heroTitle.innerHTML = `${activeSlide.dataset.title} <em>${activeSlide.dataset.accent}</em>`;
+    heroCopy.textContent = activeSlide.dataset.copy || '';
+  }
+
+  function startHeroCarousel() {
+    if (!heroSlides.length) return;
+    if (heroTimer) window.clearInterval(heroTimer);
+    heroTimer = window.setInterval(() => {
+      setHeroSlide(heroIndex + 1);
+    }, 4200);
+  }
+
+  heroDots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      setHeroSlide(index);
+      startHeroCarousel();
+    });
+  });
+
+  if (heroSlides.length) {
+    setHeroSlide(0);
+    startHeroCarousel();
+  }
+
+  /* ── Home business menu ── */
+  const businessButtons = Array.from(document.querySelectorAll('.business-menu-item'));
+  const businessTitle = document.getElementById('business-title');
+  const businessCopy = document.getElementById('business-copy');
+  const businessImageA = document.getElementById('business-image-a');
+  const businessImageB = document.getElementById('business-image-b');
+
+  function setBusinessPanel(button) {
+    if (!button || !businessTitle || !businessCopy || !businessImageA || !businessImageB) return;
+
+    businessButtons.forEach(item => item.classList.remove('is-active'));
+    button.classList.add('is-active');
+    businessTitle.innerHTML = button.dataset.businessTitle || '';
+    businessCopy.textContent = button.dataset.businessCopy || '';
+    businessImageA.src = button.dataset.imageA || businessImageA.src;
+    businessImageB.src = button.dataset.imageB || businessImageB.src;
+    businessImageA.alt = `${button.dataset.businessTitle || 'Project'} image 1`;
+    businessImageB.alt = `${button.dataset.businessTitle || 'Project'} image 2`;
+  }
+
+  businessButtons.forEach(button => {
+    button.addEventListener('click', () => setBusinessPanel(button));
+  });
+
+  /* ── Parallax hero image (subtle) ── */
+  const heroBg = document.querySelector('.hero-parallax');
+  if (heroBg) {
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      heroBg.style.transform = `translateY(${y * 0.28}px)`;
+    }, { passive: true });
+  }
+
+  /* ── Project filter (projects page) ── */
+  const filterBtns = document.querySelectorAll('[data-filter]');
+  const projectCards = document.querySelectorAll('[data-category]');
+  if (filterBtns.length) {
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        projectCards.forEach(card => {
+          const show = filter === 'all' || card.dataset.category === filter;
+          card.style.opacity = show ? '1' : '0.2';
+          card.style.pointerEvents = show ? 'auto' : 'none';
+          card.style.transform = show ? 'scale(1)' : 'scale(0.97)';
+        });
+      });
+    });
+  }
+
+  /* ── Form interaction (contact page) ── */
+  document.querySelectorAll('.form-field input, .form-field textarea').forEach(field => {
+    field.addEventListener('focus', () => {
+      field.closest('.form-field').classList.add('focused');
+    });
+    field.addEventListener('blur', () => {
+      field.closest('.form-field').classList.remove('focused');
+      if (field.value.trim()) field.closest('.form-field').classList.add('filled');
+      else field.closest('.form-field').classList.remove('filled');
+    });
+  });
+
+});
+</script>
+</body>
+</html>

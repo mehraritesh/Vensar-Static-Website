@@ -1,0 +1,545 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Gallery — Vensar Constructions</title><style>/* ============================================================
+   VENSAR CONSTRUCTIONS — SHARED DESIGN SYSTEM
+   "The Architectural Monolith" — Industrial Editorial
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+
+/* ─── TOKENS ─── */
+:root {
+  --navy:        #001f4d;
+  --navy-mid:    #002a68;
+  --navy-light:  #1a3c71;
+  --rust:        #b84000;
+  --amber:       #c94d00;
+  --amber-bright:#e05a00;
+  --amber-dim:   #ffa570;
+  --gold-chip:   #ffddaf;
+  --gold-text:   #3a2000;
+  --surface:     #faf7f6;
+  --surf-low:    #f3eeec;
+  --surf-mid:    #ebe5e4;
+  --surf-high:   #ddd7d6;
+  --ink:         #1a1918;
+  --ink-muted:   #4d4644;
+  --ink-faint:   #8a8280;
+  --white:       #ffffff;
+  --transition:  0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body:    'Barlow', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+}
+
+/* ─── RESET ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--surface);
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; font-family: var(--font-body); border: none; outline: none; }
+input, textarea, select { font-family: var(--font-body); }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--amber); }
+::selection { background: var(--gold-chip); color: var(--gold-text); }
+
+/* ─── MATERIAL SYMBOLS ─── */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* ─── NAVIGATION ─── */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(0, 31, 77, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  transition: background var(--transition);
+}
+.nav.scrolled {
+  background: rgba(0, 20, 55, 0.97);
+}
+.nav-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.nav-logo span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--amber-bright);
+  border-radius: 50%;
+  margin-bottom: 2px;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  transition: color var(--transition);
+  position: relative;
+  padding-bottom: 2px;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; right: 100%;
+  height: 1px;
+  background: var(--amber-bright);
+  transition: right var(--transition);
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { right: 0; }
+.nav-links a.active {
+  color: var(--white);
+}
+.nav-links a.active::after { right: 0; }
+.nav-cta {
+  background: var(--amber);
+  color: var(--white);
+  padding: 0.65rem 1.5rem;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: background var(--transition), transform 0.15s;
+}
+.nav-cta:hover { background: var(--amber-bright); transform: translateY(-1px); }
+.nav-cta:active { transform: translateY(0); }
+
+/* Mobile hamburger */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  padding: 4px;
+}
+.nav-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--white);
+  transition: all 0.3s;
+}
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.nav-mobile {
+  display: none;
+  background: rgba(0,20,55,0.98);
+  padding: 1.5rem 3rem 2rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.nav-mobile.open { display: block; }
+.nav-mobile a {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: color var(--transition);
+}
+.nav-mobile a:hover, .nav-mobile a.active { color: var(--white); }
+.nav-mobile .nav-cta { display: inline-block; margin-top: 1.5rem; }
+
+@media (max-width: 900px) {
+  .nav-links, .nav-cta { display: none; }
+  .nav-toggle { display: flex; }
+}
+
+/* ─── PAGE ENTRY ANIMATION ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideRight {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.anim-fade-up  { animation: fadeUp 0.7s cubic-bezier(0.4,0,0.2,1) both; }
+.anim-fade-in  { animation: fadeIn 0.9s ease both; }
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.22s; }
+.delay-3 { animation-delay: 0.38s; }
+.delay-4 { animation-delay: 0.52s; }
+.delay-5 { animation-delay: 0.68s; }
+
+/* ─── SCROLL REVEAL ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1.visible { transition-delay: 0.1s; }
+.reveal-delay-2.visible { transition-delay: 0.2s; }
+.reveal-delay-3.visible { transition-delay: 0.3s; }
+.reveal-delay-4.visible { transition-delay: 0.4s; }
+
+/* ─── LAYOUT HELPERS ─── */
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 3rem;
+}
+@media (max-width: 768px) { .container { padding: 0 1.5rem; } }
+
+/* ─── SECTION LABEL ─── */
+.section-label {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber-bright);
+  margin-bottom: 1rem;
+}
+.section-label.light { color: var(--amber-dim); }
+
+/* ─── BUTTONS ─── */
+.btn-primary {
+  display: inline-block;
+  background: var(--amber);
+  color: var(--white);
+  padding: 1rem 2.5rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: background var(--transition), transform 0.15s;
+}
+.btn-primary:hover { background: var(--amber-bright); transform: translateY(-2px); }
+.btn-ghost {
+  display: inline-block;
+  background: transparent;
+  color: var(--white);
+  padding: 1rem 2.5rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.3);
+  transition: background var(--transition), border-color var(--transition);
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.6); }
+.btn-outline {
+  display: inline-block;
+  background: transparent;
+  color: var(--navy);
+  padding: 1rem 2.5rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid var(--navy);
+  transition: background var(--transition), color var(--transition);
+}
+.btn-outline:hover { background: var(--navy); color: var(--white); }
+
+/* ─── CHIP ─── */
+.chip {
+  display: inline-block;
+  background: var(--gold-chip);
+  color: var(--gold-text);
+  padding: 0.3rem 0.9rem;
+  border-radius: 99px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ─── STAT BAR ─── */
+.stat-row {
+  display: flex;
+  gap: 4rem;
+  flex-wrap: wrap;
+}
+.stat-item {
+  border-left: 2px solid var(--amber-bright);
+  padding-left: 1.25rem;
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-top: 0.35rem;
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  background: #000e2a;
+  padding: 5rem 0 2.5rem;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 3rem;
+  padding-bottom: 3.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+@media (max-width: 1024px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; } }
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+.footer-brand-dot {
+  width: 6px; height: 6px;
+  background: var(--amber-bright);
+  border-radius: 50%;
+  margin-bottom: 2px;
+}
+.footer-tagline {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.7;
+  max-width: 280px;
+  margin-bottom: 2rem;
+}
+.footer-social {
+  display: flex;
+  gap: 0.75rem;
+}
+.footer-social a {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.4);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  transition: all var(--transition);
+}
+.footer-social a:hover {
+  border-color: var(--amber-bright);
+  color: var(--amber-bright);
+}
+.footer-duns {
+  margin-top: 1.5rem;
+}
+.footer-col-title {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber-bright);
+  margin-bottom: 1.5rem;
+}
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.footer-links a {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  transition: color var(--transition);
+}
+.footer-links a:hover { color: var(--white); }
+.footer-address {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+.footer-contact a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 0.6rem;
+  transition: color var(--transition);
+}
+.footer-contact a:hover { color: var(--amber-dim); }
+.footer-contact .material-symbols-outlined { font-size: 1rem; }
+.footer-bottom {
+  padding-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-copy {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+}
+.footer-legal {
+  display: flex;
+  gap: 1.5rem;
+}
+.footer-legal a {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+  transition: color var(--transition);
+}
+.footer-legal a:hover { color: rgba(255,255,255,0.5); }
+
+/* ─── STATUS BADGE ─── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+.status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Vensar logo update */
+.nav-logo { width: 190px; background: rgba(255,255,255,0.96); padding: 0.35rem 0.55rem; border-radius: 2px; gap: 0; }
+.nav-logo img { display: block; width: 100%; height: auto; }
+.nav-logo span { display: none; }
+.footer-brand-logo { background: rgba(255,255,255,0.95); padding: 0.45rem 0.65rem; width: 210px; }
+.footer-brand-logo img { display: block; width: 100%; height: auto; }
+.footer-duns { margin-top: 1.2rem; }
+@media (max-width: 520px) { .nav-logo { width: 158px; } }
+
+</style><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/><style>
+/* PAGE HERO */
+.page-hero{position:relative;height:560px;display:flex;align-items:flex-end;overflow:hidden;background:var(--navy)}
+.page-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.38}.page-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,var(--navy) 30%,rgba(0,31,77,.55) 70%,transparent)}.page-hero-content{position:relative;z-index:2;padding-bottom:5rem;padding-top:76px;width:100%}.page-hero-label{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem}.page-hero-label-line{width:32px;height:1px;background:var(--amber-bright)}.page-hero-label-text{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--amber-dim)}.page-hero-h1{font-family:var(--font-display);font-size:clamp(3rem,7vw,6rem);font-weight:900;text-transform:uppercase;letter-spacing:-.02em;color:var(--white);line-height:.88;max-width:760px}.page-hero-h1 em{font-style:normal;color:var(--amber-bright)}.breadcrumb{display:flex;align-items:center;gap:.5rem;margin-bottom:1.5rem}.breadcrumb a,.breadcrumb span{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.32)}.breadcrumb .current{color:var(--amber-dim)}
+.page-intro{padding:5rem 0;background:var(--surface)}.page-intro-grid{display:grid;grid-template-columns:5fr 7fr;gap:4rem;align-items:start}.intro-kicker{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--amber-bright);margin-bottom:1rem}.intro-title{font-family:var(--font-display);font-size:clamp(2.4rem,5vw,4.4rem);font-weight:900;text-transform:uppercase;color:var(--navy);line-height:.92;letter-spacing:-.02em}.intro-text{font-size:1rem;line-height:1.85;color:var(--ink-muted);font-weight:300}.metric-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--surf-high);margin-top:3rem}.metric-tile{background:var(--navy);padding:2rem}.metric-tile strong{font-family:var(--font-display);font-size:2.6rem;color:var(--white);line-height:1}.metric-tile span{display:block;font-family:var(--font-mono);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:.5rem}
+.gallery-section,.clients-section,.safety-section{padding:5rem 0 7rem;background:var(--surf-low)}.section-head{display:flex;justify-content:space-between;align-items:end;gap:2rem;margin-bottom:2.5rem}.section-head h2{font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);font-weight:900;text-transform:uppercase;color:var(--navy);line-height:.94}.section-head p{max-width:460px;color:var(--ink-muted);line-height:1.7;font-weight:300}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:260px;gap:1rem}.gallery-card{position:relative;overflow:hidden;background:var(--navy)}.gallery-card:nth-child(1),.gallery-card:nth-child(6){grid-column:span 2;grid-row:span 2}.gallery-card img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.4,0,.2,1);opacity:.9}.gallery-card:hover img{transform:scale(1.06)}
+.client-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--surf-high);border:1px solid var(--surf-high)}.client-card{min-height:190px;background:var(--surface);padding:1.5rem;display:flex;flex-direction:column;justify-content:space-between;transition:background var(--transition),transform .25s}.client-card:hover{background:var(--white);transform:translateY(-3px)}.client-mark{width:42px;height:42px;background:var(--navy);color:var(--white);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:900;font-size:1rem}.client-card h3{font-family:var(--font-display);font-size:1.45rem;font-weight:800;text-transform:uppercase;color:var(--navy);line-height:1}.client-card p{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}.client-band{margin-top:4rem;background:var(--navy);padding:3rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem}.client-band strong{font-family:var(--font-display);font-size:3rem;color:var(--white);line-height:1}.client-band span{display:block;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:.4rem}
+.safety-layout{display:grid;grid-template-columns:4fr 8fr;gap:2rem}.safety-panel{background:var(--navy);padding:2.5rem;color:var(--white);position:sticky;top:110px;align-self:start}.safety-panel h3{font-family:var(--font-display);font-size:2.4rem;line-height:.95;text-transform:uppercase;margin-bottom:1.25rem}.safety-panel p{color:rgba(255,255,255,.62);line-height:1.75;font-weight:300}.safety-list{display:grid;gap:1rem}.safety-card{background:var(--surface);padding:1.75rem;border-left:4px solid var(--amber-bright);display:grid;grid-template-columns:auto 1fr;gap:1.25rem;align-items:start}.safety-num{font-family:var(--font-display);font-size:2rem;font-weight:900;color:var(--amber-bright);line-height:1}.safety-card h3{font-family:var(--font-display);font-size:1.6rem;text-transform:uppercase;color:var(--navy);line-height:1;margin-bottom:.5rem}.safety-card p{color:var(--ink-muted);line-height:1.7;font-weight:300}.protocol-grid{margin-top:4rem;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}.protocol{background:var(--white);padding:1.5rem;min-height:180px}.protocol span{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--amber-bright)}.protocol h3{font-family:var(--font-display);font-size:1.35rem;text-transform:uppercase;color:var(--navy);line-height:1;margin-top:.8rem}
+.cta-strip{background:var(--navy);padding:5rem 0}.cta-strip-inner{display:flex;justify-content:space-between;align-items:center;gap:2rem}.cta-strip-title{font-family:var(--font-display);font-size:clamp(2.6rem,6vw,5rem);font-weight:900;text-transform:uppercase;color:var(--white);line-height:.88}.cta-strip-btns{display:flex;gap:1rem;flex-wrap:wrap}
+@media(max-width:1100px){.gallery-grid{grid-template-columns:repeat(2,1fr)}.client-grid{grid-template-columns:repeat(3,1fr)}.protocol-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:900px){.page-intro-grid,.safety-layout,.cta-strip-inner{grid-template-columns:1fr;display:grid}.client-band{grid-template-columns:1fr}.safety-panel{position:static}.gallery-card:nth-child(1),.gallery-card:nth-child(6){grid-column:span 1;grid-row:span 1}}@media(max-width:650px){.page-hero{height:460px}.gallery-grid,.client-grid,.protocol-grid{grid-template-columns:1fr}.gallery-grid{grid-auto-rows:260px}.metric-strip{grid-template-columns:1fr}.section-head{display:block}.section-head p{margin-top:1rem}.client-band{padding:2rem}.page-intro{padding:3.5rem 0}.gallery-section,.clients-section,.safety-section{padding:3.5rem 0 5rem}}
+</style><link href="styles.css" rel="stylesheet"/></head><body><nav class="nav"><div class="nav-inner"><a href="index.html" class="nav-logo"><img src="assets/brand/vensar-logo.png" alt="Vensar"/></a><ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li><a href="projects.html">Projects</a></li><li><a href="gallery.html" class="active">Gallery</a></li><li><a href="clients.html">Clients</a></li><li><a href="safety.html">Safety</a></li><li><a href="terms.html">Terms</a></li><li><a href="contact.html">Contact</a></li></ul><a href="contact.html" class="nav-cta">Request Quote</a><button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button></div><div class="nav-mobile"><a href="index.html">Home</a><a href="services.html">Services</a><a href="projects.html">Projects</a><a href="gallery.html" class="active">Gallery</a><a href="clients.html">Clients</a><a href="safety.html">Safety</a><a href="terms.html">Terms</a><a href="contact.html">Contact</a><a href="contact.html" class="nav-cta">Request Quote</a></div></nav><section class="page-hero"><img class="page-hero-img" src="assets/slider/gallery-20.jpg" alt="Vensar project gallery"/><div class="page-hero-overlay"></div><div class="page-hero-content container"><div class="breadcrumb anim-fade-up"><a href="index.html">Home</a><span>/</span><span class="current">Gallery</span></div><div class="page-hero-label anim-fade-up delay-1"><span class="page-hero-label-line"></span><span class="page-hero-label-text">Gallery</span></div><h1 class="page-hero-h1 anim-fade-up delay-2">Work fronts<br/><em>in focus.</em></h1></div></section><section class="page-intro"><div class="container"><div class="page-intro-grid"><div class="reveal"><div class="intro-kicker">Field Gallery</div><h2 class="intro-title">Work fronts, progress and built assets.</h2></div><p class="intro-text reveal reveal-delay-1">A visual record of Vensar's construction work across tunnels, metro corridors, irrigation links, industrial buildings, public assets and power restoration assignments.</p></div><div class="metric-strip reveal reveal-delay-2"><div class="metric-tile"><strong data-count="38">0</strong><span>Featured Work Fronts</span></div><div class="metric-tile"><strong>Pan India</strong><span>Project Presence</span></div><div class="metric-tile"><strong>25+</strong><span>Years Experience</span></div></div></div></section><section class="gallery-section"><div class="container"><div class="section-head reveal"><h2>Site Frames</h2><p>Selected project views representing civil execution, railway and metro tunnelling, water systems, industrial work and public infrastructure.</p></div><div class="gallery-grid"><article class="gallery-card reveal reveal-delay-0"><img src="assets/gallery/gallery-highway.jpg" alt="Vensar project gallery image 1"/></article><article class="gallery-card reveal reveal-delay-1"><img src="assets/gallery/gallery-railway.jpg" alt="Vensar project gallery image 2"/></article><article class="gallery-card reveal reveal-delay-2"><img src="assets/gallery/gallery-building.jpg" alt="Vensar project gallery image 3"/></article><article class="gallery-card reveal reveal-delay-3"><img src="assets/gallery/gallery-mining.jpg" alt="Vensar project gallery image 4"/></article><article class="gallery-card reveal reveal-delay-0"><img src="assets/gallery/gallery-power.jpg" alt="Vensar project gallery image 5"/></article><article class="gallery-card reveal reveal-delay-1"><img src="assets/gallery/gallery-tunnel.jpg" alt="Vensar project gallery image 6"/></article><article class="gallery-card reveal reveal-delay-2"><img src="assets/gallery/gallery-live-c1.jpg" alt="Vensar project gallery image 7"/></article><article class="gallery-card reveal reveal-delay-3"><img src="assets/gallery/gallery-live-c2.jpg" alt="Vensar project gallery image 8"/></article></div></div></section><section class="cta-strip"><div class="container"><div class="cta-strip-inner"><h2 class="cta-strip-title reveal">See the<br/>work in motion.</h2><div class="cta-strip-btns reveal reveal-delay-2"><a href="projects.html" class="btn-primary">View Projects</a><a href="contact.html" class="btn-ghost">Contact Team</a></div></div></div></section><!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand footer-brand-logo"><img src="assets/brand/vensar-logo.png" alt="Vensar"/></div>
+        <p class="footer-tagline">Civil infrastructure, buildings, industrial works and development projects delivered with disciplined planning, safety-led execution and dependable site control.</p>
+        <div class="footer-social"><a href="#">LI</a><a href="#">IG</a><a href="#">TW</a></div>
+        <div class="footer-duns"><script language="JavaScript" src="https://dunsregistered.dnb.com" type="text/javascript"></script></div>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigate</div>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="clients.html">Clients</a></li>
+          <li><a href="safety.html">Safety</a></li>
+          <li><a href="terms.html">Terms</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Core Work</div>
+        <ul class="footer-links">
+          <li><a href="services.html">Civil Infrastructure</a></li>
+          <li><a href="services.html">Rail &amp; Metro</a></li>
+          <li><a href="services.html">Power &amp; Mining</a></li>
+          <li><a href="safety.html">EHS Controls</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Corporate Office</div>
+        <p class="footer-address">8-2-12/76/1/B, 3rd Floor<br/>Ashoka Hitech Chambers, Road No 2<br/>Banjara Hills, Hyderabad - 500034</p>
+        <div class="footer-contact">
+          <a href="tel:+9104023551699"><span class="material-symbols-outlined">call</span>+91 040 23551699</a>
+          <a href="mailto:info@vensar.com"><span class="material-symbols-outlined">mail</span>info@vensar.com</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Vensar Constructions. All Rights Reserved.</span>
+      <div class="footer-legal"><a href="terms.html">Terms</a><a href="#">Accessibility</a><a href="#">Cookies</a></div>
+    </div>
+  </div>
+</footer><script src="gallery-manifest.js"></script><script>document.addEventListener('DOMContentLoaded',()=>{const fallbackGallery=['assets/gallery/gallery-19.jpg','assets/gallery/gallery-b10.jpeg','assets/gallery/gallery-b13.jpeg','assets/gallery/gallery-building.jpg','assets/gallery/gallery-highway.jpg','assets/gallery/gallery-live-12.jpg','assets/gallery/gallery-live-14.jpg','assets/gallery/gallery-live-15.jpg','assets/gallery/gallery-live-16.jpg','assets/gallery/gallery-live-18.jpg','assets/gallery/gallery-live-b12.jpeg','assets/gallery/gallery-live-b14.jpeg','assets/gallery/gallery-live-b15.jpeg','assets/gallery/gallery-live-b16.jpg','assets/gallery/gallery-live-b17.jpg','assets/gallery/gallery-live-b2.jpg','assets/gallery/gallery-live-b21.jpg','assets/gallery/gallery-live-b23.jpeg','assets/gallery/gallery-live-b6.jpeg','assets/gallery/gallery-live-b7.jpeg','assets/gallery/gallery-live-b8.jpeg','assets/gallery/gallery-live-c1.jpg','assets/gallery/gallery-live-c2.jpg','assets/gallery/gallery-mining.jpg','assets/gallery/gallery-power.jpg','assets/gallery/gallery-power2.jpg','assets/gallery/gallery-railway.jpg','assets/gallery/gallery-tunnel.jpg','assets/gallery/gallery-tuunel.jpeg'];const manifestFiles=Array.isArray(window.GALLERY_MANIFEST)?window.GALLERY_MANIFEST.filter(file=>typeof file==='string'&&file.startsWith('assets/gallery/')):fallbackGallery;const liveGallery=manifestFiles.length?manifestFiles:fallbackGallery;const grid=document.querySelector('.gallery-grid');if(grid){grid.innerHTML=liveGallery.map((file,index)=>`<article class="gallery-card reveal reveal-delay-${index%4}"><img src="${file}" alt="Vensar project gallery image ${index+1}" loading="lazy"/></article>`).join('')}const galleryMetric=document.querySelector('.metric-tile [data-count]');if(galleryMetric){galleryMetric.dataset.count=String(liveGallery.length);galleryMetric.textContent='0'}})</script><script>document.addEventListener('DOMContentLoaded',()=>{const nav=document.querySelector('.nav');if(nav){window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40)},{passive:true})}const toggle=document.querySelector('.nav-toggle');const mobileNav=document.querySelector('.nav-mobile');if(toggle&&mobileNav){toggle.addEventListener('click',()=>{toggle.classList.toggle('open');mobileNav.classList.toggle('open')});mobileNav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{toggle.classList.remove('open');mobileNav.classList.remove('open')}))}if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}})},{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el))}else{document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'))}const counterObserver='IntersectionObserver' in window?new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){animateCounter(entry.target);counterObserver.unobserve(entry.target)}})},{threshold:.5}):null;document.querySelectorAll('[data-count]').forEach(el=>counterObserver?counterObserver.observe(el):animateCounter(el));function animateCounter(el){const target=parseFloat(el.dataset.count);const suffix=el.dataset.suffix||'';const prefix=el.dataset.prefix||'';const decimals=el.dataset.decimals?parseInt(el.dataset.decimals):0;const duration=1400;const start=performance.now();function update(now){const progress=Math.min((now-start)/duration,1);const eased=1-Math.pow(1-progress,3);el.textContent=prefix+(target*eased).toFixed(decimals)+suffix;if(progress<1)requestAnimationFrame(update)}requestAnimationFrame(update)}})</script></body></html>

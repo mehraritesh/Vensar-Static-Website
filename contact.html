@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Contact — Vensar Constructions</title>
+<style>/* ============================================================
+   VENSAR CONSTRUCTIONS — SHARED DESIGN SYSTEM
+   "The Architectural Monolith" — Industrial Editorial
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+
+/* ─── TOKENS ─── */
+:root {
+  --navy:        #001f4d;
+  --navy-mid:    #002a68;
+  --navy-light:  #1a3c71;
+  --rust:        #b84000;
+  --amber:       #c94d00;
+  --amber-bright:#e05a00;
+  --amber-dim:   #ffa570;
+  --gold-chip:   #ffddaf;
+  --gold-text:   #3a2000;
+  --surface:     #faf7f6;
+  --surf-low:    #f3eeec;
+  --surf-mid:    #ebe5e4;
+  --surf-high:   #ddd7d6;
+  --ink:         #1a1918;
+  --ink-muted:   #4d4644;
+  --ink-faint:   #8a8280;
+  --white:       #ffffff;
+  --transition:  0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body:    'Barlow', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+}
+
+/* ─── RESET ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--surface);
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; font-family: var(--font-body); border: none; outline: none; }
+input, textarea, select { font-family: var(--font-body); }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--amber); }
+::selection { background: var(--gold-chip); color: var(--gold-text); }
+
+/* ─── MATERIAL SYMBOLS ─── */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* ─── NAVIGATION ─── */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(0, 31, 77, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  transition: background var(--transition);
+}
+.nav.scrolled {
+  background: rgba(0, 20, 55, 0.97);
+}
+.nav-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.nav-logo span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--amber-bright);
+  border-radius: 50%;
+  margin-bottom: 2px;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  transition: color var(--transition);
+  position: relative;
+  padding-bottom: 2px;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; right: 100%;
+  height: 1px;
+  background: var(--amber-bright);
+  transition: right var(--transition);
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { right: 0; }
+.nav-links a.active {
+  color: var(--white);
+}
+.nav-links a.active::after { right: 0; }
+.nav-cta {
+  background: var(--amber);
+  color: var(--white);
+  padding: 0.65rem 1.5rem;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: background var(--transition), transform 0.15s;
+}
+.nav-cta:hover { background: var(--amber-bright); transform: translateY(-1px); }
+.nav-cta:active { transform: translateY(0); }
+
+/* Mobile hamburger */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  padding: 4px;
+}
+.nav-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--white);
+  transition: all 0.3s;
+}
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.nav-mobile {
+  display: none;
+  background: rgba(0,20,55,0.98);
+  padding: 1.5rem 3rem 2rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.nav-mobile.open { display: block; }
+.nav-mobile a {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: color var(--transition);
+}
+.nav-mobile a:hover, .nav-mobile a.active { color: var(--white); }
+.nav-mobile .nav-cta { display: inline-block; margin-top: 1.5rem; }
+
+@media (max-width: 900px) {
+  .nav-links, .nav-cta { display: none; }
+  .nav-toggle { display: flex; }
+}
+
+/* ─── PAGE ENTRY ANIMATION ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideRight {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.anim-fade-up  { animation: fadeUp 0.7s cubic-bezier(0.4,0,0.2,1) both; }
+.anim-fade-in  { animation: fadeIn 0.9s ease both; }
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.22s; }
+.delay-3 { animation-delay: 0.38s; }
+.delay-4 { animation-delay: 0.52s; }
+.delay-5 { animation-delay: 0.68s; }
+
+/* ─── SCROLL REVEAL ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1.visible { transition-delay: 0.1s; }
+.reveal-delay-2.visible { transition-delay: 0.2s; }
+.reveal-delay-3.visible { transition-delay: 0.3s; }
+.reveal-delay-4.visible { transition-delay: 0.4s; }
+
+/* ─── LAYOUT HELPERS ─── */
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 3rem;
+}
+@media (max-width: 768px) { .container { padding: 0 1.5rem; } }
+
+/* ─── SECTION LABEL ─── */
+.section-label {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber-bright);
+  margin-bottom: 1rem;
+}
+.section-label.light { color: var(--amber-dim); }
+
+/* ─── BUTTONS ─── */
+.btn-primary {
+  display: inline-block;
+  background: var(--amber);
+  color: var(--white);
+  padding: 1rem 2.5rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: background var(--transition), transform 0.15s;
+}
+.btn-primary:hover { background: var(--amber-bright); transform: translateY(-2px); }
+.btn-ghost {
+  display: inline-block;
+  background: transparent;
+  color: var(--white);
+  padding: 1rem 2.5rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.3);
+  transition: background var(--transition), border-color var(--transition);
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.6); }
+.btn-outline {
+  display: inline-block;
+  background: transparent;
+  color: var(--navy);
+  padding: 1rem 2.5rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid var(--navy);
+  transition: background var(--transition), color var(--transition);
+}
+.btn-outline:hover { background: var(--navy); color: var(--white); }
+
+/* ─── CHIP ─── */
+.chip {
+  display: inline-block;
+  background: var(--gold-chip);
+  color: var(--gold-text);
+  padding: 0.3rem 0.9rem;
+  border-radius: 99px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ─── STAT BAR ─── */
+.stat-row {
+  display: flex;
+  gap: 4rem;
+  flex-wrap: wrap;
+}
+.stat-item {
+  border-left: 2px solid var(--amber-bright);
+  padding-left: 1.25rem;
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-top: 0.35rem;
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  background: #000e2a;
+  padding: 5rem 0 2.5rem;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 3rem;
+  padding-bottom: 3.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+@media (max-width: 1024px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; } }
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+.footer-brand-dot {
+  width: 6px; height: 6px;
+  background: var(--amber-bright);
+  border-radius: 50%;
+  margin-bottom: 2px;
+}
+.footer-tagline {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.7;
+  max-width: 280px;
+  margin-bottom: 2rem;
+}
+.footer-social {
+  display: flex;
+  gap: 0.75rem;
+}
+.footer-social a {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.4);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  transition: all var(--transition);
+}
+.footer-social a:hover {
+  border-color: var(--amber-bright);
+  color: var(--amber-bright);
+}
+.footer-col-title {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber-bright);
+  margin-bottom: 1.5rem;
+}
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.footer-links a {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  transition: color var(--transition);
+}
+.footer-links a:hover { color: var(--white); }
+.footer-address {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+.footer-contact a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 0.6rem;
+  transition: color var(--transition);
+}
+.footer-contact a:hover { color: var(--amber-dim); }
+.footer-contact .material-symbols-outlined { font-size: 1rem; }
+.footer-bottom {
+  padding-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-copy {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+}
+.footer-legal {
+  display: flex;
+  gap: 1.5rem;
+}
+.footer-legal a {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+  transition: color var(--transition);
+}
+.footer-legal a:hover { color: rgba(255,255,255,0.5); }
+
+/* ─── STATUS BADGE ─── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+.status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Vensar logo update */
+.nav-logo { width: 190px; background: rgba(255,255,255,0.96); padding: 0.35rem 0.55rem; border-radius: 2px; gap: 0; }
+.nav-logo img { display: block; width: 100%; height: auto; }
+.nav-logo span { display: none; }
+.footer-brand-logo { background: rgba(255,255,255,0.95); padding: 0.45rem 0.65rem; width: 210px; }
+.footer-brand-logo img { display: block; width: 100%; height: auto; }
+.footer-duns { margin-top: 1.2rem; }
+@media (max-width: 520px) { .nav-logo { width: 158px; } }
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+/* ── PAGE HERO ── */
+.page-hero {
+  position: relative;
+  height: 480px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: var(--navy);
+}
+.page-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; }
+.page-hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, var(--navy) 30%, rgba(0,31,77,0.5) 70%, transparent);
+}
+.page-hero-content {
+  position: relative; z-index: 2;
+  padding-bottom: 5rem; padding-top: 76px; width: 100%;
+}
+.page-hero-label { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+.page-hero-label-line { width: 32px; height: 1px; background: var(--amber-bright); }
+.page-hero-label-text { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--amber-dim); }
+.page-hero-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  line-height: 0.9;
+  max-width: 720px;
+}
+.page-hero-h1 em { font-style: normal; color: var(--amber-bright); }
+.breadcrumb { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; }
+.breadcrumb a, .breadcrumb span { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); transition: color var(--transition); }
+.breadcrumb a:hover { color: rgba(255,255,255,0.7); }
+.breadcrumb .sep { color: rgba(255,255,255,0.15); }
+.breadcrumb .current { color: var(--amber-dim); }
+
+/* ── CONTACT MAIN ── */
+.contact-main {
+  padding: 7rem 0;
+  background: var(--surface);
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 6rem;
+  align-items: start;
+}
+@media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; gap: 3.5rem; } }
+
+/* Left column */
+.contact-info-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  margin-bottom: 1.25rem;
+}
+.contact-info-text {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--ink-muted);
+  line-height: 1.8;
+  margin-bottom: 3rem;
+}
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+.contact-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+.contact-detail-icon {
+  width: 48px; height: 48px;
+  background: var(--surf-low);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  color: var(--amber-bright);
+}
+.contact-detail-icon .material-symbols-outlined { font-size: 1.25rem; }
+.contact-detail-label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 0.35rem;
+}
+.contact-detail-val {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.contact-detail-val a { color: var(--ink); transition: color var(--transition); }
+.contact-detail-val a:hover { color: var(--amber); }
+
+/* Map placeholder */
+.contact-map {
+  width: 100%;
+  height: 240px;
+  background: var(--surf-mid);
+  overflow: hidden;
+  position: relative;
+  margin-top: 0.5rem;
+}
+.contact-map img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) opacity(0.45);
+}
+.contact-map-pin {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.contact-map-pin-inner {
+  background: var(--navy);
+  color: var(--white);
+  padding: 0.6rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.contact-map-pin-inner .material-symbols-outlined { font-size: 0.9rem; color: var(--amber-bright); }
+
+/* Office hours */
+.contact-hours {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--surf-low);
+  border-left: 2px solid var(--amber);
+}
+.contact-hours-title {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 0.75rem;
+}
+.contact-hours-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--surf-mid);
+}
+.contact-hours-row:last-child { border-bottom: none; }
+.contact-hours-day { font-weight: 500; }
+
+/* ── FORM ── */
+.contact-form-wrap {
+  background: var(--surf-low);
+  padding: 3rem;
+}
+@media (max-width: 600px) { .contact-form-wrap { padding: 2rem; } }
+.form-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.5rem;
+}
+.form-subtitle {
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--ink-muted);
+  margin-bottom: 2.5rem;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+@media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+.form-field {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.form-field:last-of-type { margin-bottom: 0; }
+.form-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 0.5rem;
+  transition: color var(--transition);
+}
+.form-field.focused .form-label { color: var(--amber-bright); }
+.form-input, .form-textarea, .form-select {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--surf-high);
+  padding: 0.75rem 0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--ink);
+  outline: none;
+  transition: border-color var(--transition);
+  appearance: none;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  border-color: var(--navy);
+}
+.form-field.focused .form-input,
+.form-field.focused .form-textarea,
+.form-field.focused .form-select {
+  border-color: var(--amber-bright);
+}
+.form-input::placeholder, .form-textarea::placeholder { color: var(--ink-faint); }
+.form-textarea { resize: none; min-height: 120px; }
+.form-select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234d4644' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.5rem center; padding-right: 2rem; }
+.form-divider { height: 1px; background: var(--surf-mid); margin: 2rem 0; }
+.form-submit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+.form-privacy {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  max-width: 260px;
+  line-height: 1.6;
+}
+.form-success {
+  display: none;
+  background: var(--navy);
+  color: var(--white);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  align-items: center;
+  gap: 0.5rem;
+}
+.form-success.show { display: flex; }
+.form-success .material-symbols-outlined { color: #22c55e; font-size: 1rem; }
+
+/* ── VENDOR CTA ── */
+.vendor-cta {
+  padding: 5rem 0;
+  background: var(--navy);
+  position: relative;
+  overflow: hidden;
+}
+.vendor-cta::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 40%;
+  height: 100%;
+  background: rgba(255,255,255,0.02);
+  clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+}
+.vendor-cta-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  position: relative;
+  z-index: 2;
+}
+.vendor-cta-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  line-height: 1;
+}
+.vendor-cta-sub {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-top: 0.5rem;
+}
+</style>
+<link href="styles.css" rel="stylesheet"/>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="assets/brand/vensar-logo.png" alt="Vensar"/></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="clients.html">Clients</a></li>
+      <li><a href="safety.html">Safety</a></li>
+      <li><a href="terms.html">Terms</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="contact.html" class="nav-cta">Request Quote</a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="nav-mobile">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="projects.html">Projects</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="clients.html">Clients</a>
+    <a href="safety.html">Safety</a>
+    <a href="terms.html">Terms</a>
+    <a href="contact.html" class="nav-cta">Request Quote</a>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <img class="page-hero-img" src="assets/slider/hero-infrastructure.jpg" alt="Vensar contact"/>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content container">
+    <div class="breadcrumb anim-fade-in delay-1">
+      <a href="index.html">Home</a>
+      <span class="sep">/</span>
+      <span class="current">Contact</span>
+    </div>
+    <div class="page-hero-label anim-fade-up delay-1">
+      <span class="page-hero-label-line"></span>
+      <span class="page-hero-label-text">Get In Touch</span>
+    </div>
+    <h1 class="page-hero-h1 anim-fade-up delay-2">Let's build<br/><em>the next</em><br/>assignment.</h1>
+  </div>
+</section>
+
+<!-- CONTACT MAIN -->
+<section class="contact-main">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- Left: Info -->
+      <div>
+        <span class="section-label reveal">Reach Us</span>
+        <h2 class="contact-info-title reveal reveal-delay-1">Vensar<br/>Constructions</h2>
+        <p class="contact-info-text reveal reveal-delay-2">Connect with Vensar for infrastructure, buildings, industrial civil packages and development assignments across India.</p>
+
+        <div class="contact-details reveal reveal-delay-2">
+          <div class="contact-detail">
+            <div class="contact-detail-icon"><span class="material-symbols-outlined">location_on</span></div>
+            <div>
+              <div class="contact-detail-label">Corporate Office</div>
+              <div class="contact-detail-val">8-2-12/76/1/B, 3rd Floor<br/>Ashoka Hitech Chambers, Road No 2<br/>Banjara Hills, Hyderabad - 500034</div>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-detail-icon"><span class="material-symbols-outlined">call</span></div>
+            <div>
+              <div class="contact-detail-label">Direct Line</div>
+              <div class="contact-detail-val"><a href="tel:+9104023551699">+91 040 23551699</a></div>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-detail-icon"><span class="material-symbols-outlined">mail</span></div>
+            <div>
+              <div class="contact-detail-label">Email</div>
+              <div class="contact-detail-val"><a href="mailto:info@vensar.com">info@vensar.com</a></div>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-detail-icon"><span class="material-symbols-outlined">public</span></div>
+            <div>
+              <div class="contact-detail-label">Registered As</div>
+              <div class="contact-detail-val">Vensar Constructions Company Limited</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-map reveal reveal-delay-3">
+          <img src="assets/slider/hero-infrastructure.jpg" alt="Vensar infrastructure"/>
+          <div class="contact-map-pin">
+            <div class="contact-map-pin-inner">
+              <span class="material-symbols-outlined">location_on</span>
+              Banjara Hills, Hyderabad
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-hours reveal reveal-delay-4">
+          <div class="contact-hours-title">Office Hours</div>
+          <div class="contact-hours-row"><span class="contact-hours-day">Monday – Friday</span><span>9:00 AM – 6:00 PM IST</span></div>
+          <div class="contact-hours-row"><span class="contact-hours-day">Saturday</span><span>9:00 AM – 1:00 PM IST</span></div>
+          <div class="contact-hours-row"><span class="contact-hours-day">Sunday</span><span>Closed</span></div>
+        </div>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="reveal reveal-delay-2">
+        <div class="contact-form-wrap">
+          <h3 class="form-title">Send an Inquiry</h3>
+          <p class="form-subtitle">Our engineering team typically responds within 1 business day.</p>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label class="form-label" for="name">Full Name</label>
+              <input class="form-input" id="name" type="text" placeholder="e.g. Rahul Sharma"/>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="company">Company</label>
+              <input class="form-input" id="company" type="text" placeholder="Organization name"/>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label class="form-label" for="email">Email Address</label>
+              <input class="form-input" id="email" type="email" placeholder="you@company.com"/>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="phone">Phone Number</label>
+              <input class="form-input" id="phone" type="tel" placeholder="+91 98765 43210"/>
+            </div>
+          </div>
+
+          <div class="form-field" style="margin-bottom:1.5rem;">
+            <label class="form-label" for="service">Service Type</label>
+            <select class="form-select" id="service">
+              <option value="" disabled selected>Select a service</option>
+              <option>Civil Infrastructure</option>
+              <option>Civil, Electrical & Mechanical</option>
+              <option>Automation & IT</option>
+              <option>Power, Mining & Industry</option>
+              <option>Rail & Metro Works</option>
+              <option>Development Models</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="form-field" style="margin-bottom:1.5rem;">
+            <label class="form-label" for="scale">Estimated Project Scale</label>
+            <select class="form-select" id="scale">
+              <option value="" disabled selected>Select scale</option>
+              <option>Under ₹5 Crore</option>
+              <option>₹5 – ₹25 Crore</option>
+              <option>₹25 – ₹100 Crore</option>
+              <option>₹100 Crore+</option>
+              <option>Not yet determined</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" for="message">Project Requirements</label>
+            <textarea class="form-textarea" id="message" rows="5" placeholder="Briefly describe your project scope, location, timeline, and any specific requirements…"></textarea>
+          </div>
+
+          <div class="form-divider"></div>
+
+          <div class="form-submit-row">
+            <p class="form-privacy">By submitting you agree to our privacy policy. Your data is never shared with third parties.</p>
+            <button class="btn-primary" id="submit-btn" type="button">Transmit Inquiry</button>
+          </div>
+
+          <div class="form-success" id="form-success">
+            <span class="material-symbols-outlined">check_circle</span>
+            Inquiry received — we'll respond within 1 business day.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- VENDOR CTA -->
+<section class="vendor-cta">
+  <div class="container">
+    <div class="vendor-cta-inner">
+      <div>
+        <h2 class="vendor-cta-title reveal">Regional Presence</h2>
+        <p class="vendor-cta-sub reveal reveal-delay-1">Hyderabad, Imphal, Agartala, Delhi, Silchar and Jammu support project coordination across strategic regions.</p>
+      </div>
+      <a href="#" class="btn-ghost reveal reveal-delay-2">Contact Team</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand footer-brand-logo"><img src="assets/brand/vensar-logo.png" alt="Vensar"/></div>
+        <p class="footer-tagline">Civil infrastructure, buildings, industrial works and development projects delivered with disciplined planning, safety-led execution and dependable site control.</p>
+        <div class="footer-social"><a href="#">LI</a><a href="#">IG</a><a href="#">TW</a></div>
+        <div class="footer-duns"><script language="JavaScript" src="https://dunsregistered.dnb.com" type="text/javascript"></script></div>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigate</div>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="clients.html">Clients</a></li>
+          <li><a href="safety.html">Safety</a></li>
+          <li><a href="terms.html">Terms</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Core Work</div>
+        <ul class="footer-links">
+          <li><a href="services.html">Civil Infrastructure</a></li>
+          <li><a href="services.html">Rail &amp; Metro</a></li>
+          <li><a href="services.html">Power &amp; Mining</a></li>
+          <li><a href="safety.html">EHS Controls</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Corporate Office</div>
+        <p class="footer-address">8-2-12/76/1/B, 3rd Floor<br/>Ashoka Hitech Chambers, Road No 2<br/>Banjara Hills, Hyderabad - 500034</p>
+        <div class="footer-contact">
+          <a href="tel:+9104023551699"><span class="material-symbols-outlined">call</span>+91 040 23551699</a>
+          <a href="mailto:info@vensar.com"><span class="material-symbols-outlined">mail</span>info@vensar.com</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Vensar Constructions. All Rights Reserved.</span>
+      <div class="footer-legal"><a href="terms.html">Terms</a><a href="#">Accessibility</a><a href="#">Cookies</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>/* vensar.js — shared across all pages */
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ── Nav scroll shadow ── */
+  const nav = document.querySelector('.nav');
+  if (nav) {
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+  }
+
+  /* ── Mobile nav toggle ── */
+  const toggle = document.querySelector('.nav-toggle');
+  const mobileNav = document.querySelector('.nav-mobile');
+  if (toggle && mobileNav) {
+    toggle.addEventListener('click', () => {
+      toggle.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+    // close on link click
+    mobileNav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        toggle.classList.remove('open');
+        mobileNav.classList.remove('open');
+      });
+    });
+  }
+
+  /* ── Active nav link ── */
+  const current = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-links a, .nav-mobile a').forEach(a => {
+    const href = a.getAttribute('href');
+    if (href === current) a.classList.add('active');
+  });
+
+  /* ── Scroll reveal ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* ── Counter animation ── */
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
+
+  function animateCounter(el) {
+    const target = parseFloat(el.dataset.count);
+    const suffix = el.dataset.suffix || '';
+    const prefix = el.dataset.prefix || '';
+    const decimals = el.dataset.decimals ? parseInt(el.dataset.decimals) : 0;
+    const duration = 1400;
+    const start = performance.now();
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = (target * eased).toFixed(decimals);
+      el.textContent = prefix + value + suffix;
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+
+  /* ── Parallax hero image (subtle) ── */
+  const heroBg = document.querySelector('.hero-parallax');
+  if (heroBg) {
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      heroBg.style.transform = `translateY(${y * 0.28}px)`;
+    }, { passive: true });
+  }
+
+  /* ── Project filter (projects page) ── */
+  const filterBtns = document.querySelectorAll('[data-filter]');
+  const projectCards = document.querySelectorAll('[data-category]');
+  if (filterBtns.length) {
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        projectCards.forEach(card => {
+          const show = filter === 'all' || card.dataset.category === filter;
+          card.style.opacity = show ? '1' : '0.2';
+          card.style.pointerEvents = show ? 'auto' : 'none';
+          card.style.transform = show ? 'scale(1)' : 'scale(0.97)';
+        });
+      });
+    });
+  }
+
+  /* ── Form interaction (contact page) ── */
+  document.querySelectorAll('.form-field input, .form-field textarea').forEach(field => {
+    field.addEventListener('focus', () => {
+      field.closest('.form-field').classList.add('focused');
+    });
+    field.addEventListener('blur', () => {
+      field.closest('.form-field').classList.remove('focused');
+      if (field.value.trim()) field.closest('.form-field').classList.add('filled');
+      else field.closest('.form-field').classList.remove('filled');
+    });
+  });
+
+});
+</script>
+<script>
+  // Form submit simulation
+  document.getElementById('submit-btn').addEventListener('click', () => {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    if (!name || !email) {
+      document.getElementById('name').focus();
+      return;
+    }
+    const btn = document.getElementById('submit-btn');
+    btn.textContent = 'Sending…';
+    btn.style.opacity = '0.7';
+    setTimeout(() => {
+      btn.style.display = 'none';
+      document.getElementById('form-success').classList.add('show');
+    }, 1200);
+  });
+</script>
+</body>
+</html>

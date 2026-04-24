@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Projects — Vensar Constructions</title>
+<style>/* ============================================================
+   VENSAR CONSTRUCTIONS — SHARED DESIGN SYSTEM
+   "The Architectural Monolith" — Industrial Editorial
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+
+/* ─── TOKENS ─── */
+:root {
+  --navy:        #001f4d;
+  --navy-mid:    #002a68;
+  --navy-light:  #1a3c71;
+  --rust:        #b84000;
+  --amber:       #c94d00;
+  --amber-bright:#e05a00;
+  --amber-dim:   #ffa570;
+  --gold-chip:   #ffddaf;
+  --gold-text:   #3a2000;
+  --surface:     #faf7f6;
+  --surf-low:    #f3eeec;
+  --surf-mid:    #ebe5e4;
+  --surf-high:   #ddd7d6;
+  --ink:         #1a1918;
+  --ink-muted:   #4d4644;
+  --ink-faint:   #8a8280;
+  --white:       #ffffff;
+  --transition:  0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body:    'Barlow', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+}
+
+/* ─── RESET ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--surface);
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; font-family: var(--font-body); border: none; outline: none; }
+input, textarea, select { font-family: var(--font-body); }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--amber); }
+::selection { background: var(--gold-chip); color: var(--gold-text); }
+
+/* ─── MATERIAL SYMBOLS ─── */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* ─── NAVIGATION ─── */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(0, 31, 77, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  transition: background var(--transition);
+}
+.nav.scrolled {
+  background: rgba(0, 20, 55, 0.97);
+}
+.nav-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.nav-logo span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--amber-bright);
+  border-radius: 50%;
+  margin-bottom: 2px;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  transition: color var(--transition);
+  position: relative;
+  padding-bottom: 2px;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; right: 100%;
+  height: 1px;
+  background: var(--amber-bright);
+  transition: right var(--transition);
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { right: 0; }
+.nav-links a.active {
+  color: var(--white);
+}
+.nav-links a.active::after { right: 0; }
+.nav-cta {
+  background: var(--amber);
+  color: var(--white);
+  padding: 0.65rem 1.5rem;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: background var(--transition), transform 0.15s;
+}
+.nav-cta:hover { background: var(--amber-bright); transform: translateY(-1px); }
+.nav-cta:active { transform: translateY(0); }
+
+/* Mobile hamburger */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  padding: 4px;
+}
+.nav-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--white);
+  transition: all 0.3s;
+}
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.nav-mobile {
+  display: none;
+  background: rgba(0,20,55,0.98);
+  padding: 1.5rem 3rem 2rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.nav-mobile.open { display: block; }
+.nav-mobile a {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: color var(--transition);
+}
+.nav-mobile a:hover, .nav-mobile a.active { color: var(--white); }
+.nav-mobile .nav-cta { display: inline-block; margin-top: 1.5rem; }
+
+@media (max-width: 900px) {
+  .nav-links, .nav-cta { display: none; }
+  .nav-toggle { display: flex; }
+}
+
+/* ─── PAGE ENTRY ANIMATION ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideRight {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.anim-fade-up  { animation: fadeUp 0.7s cubic-bezier(0.4,0,0.2,1) both; }
+.anim-fade-in  { animation: fadeIn 0.9s ease both; }
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.22s; }
+.delay-3 { animation-delay: 0.38s; }
+.delay-4 { animation-delay: 0.52s; }
+.delay-5 { animation-delay: 0.68s; }
+
+/* ─── SCROLL REVEAL ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1.visible { transition-delay: 0.1s; }
+.reveal-delay-2.visible { transition-delay: 0.2s; }
+.reveal-delay-3.visible { transition-delay: 0.3s; }
+.reveal-delay-4.visible { transition-delay: 0.4s; }
+
+/* ─── LAYOUT HELPERS ─── */
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 3rem;
+}
+@media (max-width: 768px) { .container { padding: 0 1.5rem; } }
+
+/* ─── SECTION LABEL ─── */
+.section-label {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber-bright);
+  margin-bottom: 1rem;
+}
+.section-label.light { color: var(--amber-dim); }
+
+/* ─── BUTTONS ─── */
+.btn-primary {
+  display: inline-block;
+  background: var(--amber);
+  color: var(--white);
+  padding: 1rem 2.5rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: background var(--transition), transform 0.15s;
+}
+.btn-primary:hover { background: var(--amber-bright); transform: translateY(-2px); }
+.btn-ghost {
+  display: inline-block;
+  background: transparent;
+  color: var(--white);
+  padding: 1rem 2.5rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.3);
+  transition: background var(--transition), border-color var(--transition);
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.6); }
+.btn-outline {
+  display: inline-block;
+  background: transparent;
+  color: var(--navy);
+  padding: 1rem 2.5rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid var(--navy);
+  transition: background var(--transition), color var(--transition);
+}
+.btn-outline:hover { background: var(--navy); color: var(--white); }
+
+/* ─── CHIP ─── */
+.chip {
+  display: inline-block;
+  background: var(--gold-chip);
+  color: var(--gold-text);
+  padding: 0.3rem 0.9rem;
+  border-radius: 99px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ─── STAT BAR ─── */
+.stat-row {
+  display: flex;
+  gap: 4rem;
+  flex-wrap: wrap;
+}
+.stat-item {
+  border-left: 2px solid var(--amber-bright);
+  padding-left: 1.25rem;
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-top: 0.35rem;
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  background: #000e2a;
+  padding: 5rem 0 2.5rem;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 3rem;
+  padding-bottom: 3.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+@media (max-width: 1024px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; } }
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+.footer-brand-dot {
+  width: 6px; height: 6px;
+  background: var(--amber-bright);
+  border-radius: 50%;
+  margin-bottom: 2px;
+}
+.footer-tagline {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.7;
+  max-width: 280px;
+  margin-bottom: 2rem;
+}
+.footer-social {
+  display: flex;
+  gap: 0.75rem;
+}
+.footer-social a {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.4);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  transition: all var(--transition);
+}
+.footer-social a:hover {
+  border-color: var(--amber-bright);
+  color: var(--amber-bright);
+}
+.footer-col-title {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber-bright);
+  margin-bottom: 1.5rem;
+}
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.footer-links a {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  transition: color var(--transition);
+}
+.footer-links a:hover { color: var(--white); }
+.footer-address {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+.footer-contact a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 0.6rem;
+  transition: color var(--transition);
+}
+.footer-contact a:hover { color: var(--amber-dim); }
+.footer-contact .material-symbols-outlined { font-size: 1rem; }
+.footer-bottom {
+  padding-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-copy {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+}
+.footer-legal {
+  display: flex;
+  gap: 1.5rem;
+}
+.footer-legal a {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+  transition: color var(--transition);
+}
+.footer-legal a:hover { color: rgba(255,255,255,0.5); }
+
+/* ─── STATUS BADGE ─── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+.status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Vensar logo update */
+.nav-logo { width: 190px; background: rgba(255,255,255,0.96); padding: 0.35rem 0.55rem; border-radius: 2px; gap: 0; }
+.nav-logo img { display: block; width: 100%; height: auto; }
+.nav-logo span { display: none; }
+.footer-brand-logo { background: rgba(255,255,255,0.95); padding: 0.45rem 0.65rem; width: 210px; }
+.footer-brand-logo img { display: block; width: 100%; height: auto; }
+.footer-duns { margin-top: 1.2rem; }
+@media (max-width: 520px) { .nav-logo { width: 158px; } }
+
+
+/* projects content-only layout */
+.projects-reference {
+  padding: 6rem 0 7rem;
+  background: var(--surf-low);
+  position: relative;
+  overflow: hidden;
+}
+.projects-reference::after {
+  content: '';
+  position: absolute;
+  right: -12vw;
+  bottom: -8vw;
+  width: 44vw;
+  height: 44vw;
+  background: rgba(0,31,77,0.035);
+  transform: rotate(-25deg);
+  pointer-events: none;
+}
+.projects-reference-head {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: 4rem;
+  align-items: end;
+  margin-bottom: 3rem;
+}
+.projects-reference-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4.8vw, 4rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--navy);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+.projects-reference-title::after {
+  content: '';
+  display: block;
+  width: 68px;
+  height: 2px;
+  background: #2f8d46;
+  margin-top: 1rem;
+}
+.projects-reference-copy {
+  max-width: 600px;
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.75;
+}
+.project-snapshot-list {
+  background: rgba(255,255,255,0.72);
+  border: 1px solid var(--surf-high);
+}
+.project-snapshot-item {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--surf-high);
+}
+.project-snapshot-item:last-child { border-bottom: 0; }
+.project-snapshot-item strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--navy);
+  letter-spacing: 0.04em;
+}
+.project-snapshot-item span {
+  display: block;
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  margin-top: 0.25rem;
+}
+.project-content-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.project-content-card {
+  min-height: 174px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.4rem;
+  padding: 1.45rem 1.6rem;
+  background: rgba(255,255,255,0.82);
+  border: 1px solid var(--surf-high);
+  border-bottom: 2px solid #2f8d46;
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+}
+.project-content-card:hover {
+  transform: translateY(-3px);
+  background: var(--white);
+  box-shadow: 0 20px 50px rgba(0,31,77,0.08);
+}
+.project-content-index {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--surf-high);
+  line-height: 1;
+}
+.project-content-tags {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.project-content-tag {
+  padding: 0.25rem 0.55rem;
+  border: 1px solid var(--surf-high);
+  font-family: var(--font-mono);
+  font-size: 0.53rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--navy);
+  background: rgba(255,255,255,0.7);
+}
+.project-content-tag.type { color: #2f8d46; }
+.project-content-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--navy);
+  line-height: 1.05;
+  margin-bottom: 0.9rem;
+}
+.project-content-card p {
+  color: var(--ink-muted);
+  font-size: 0.83rem;
+  line-height: 1.55;
+  font-weight: 300;
+}
+.completed-reference {
+  padding: 6rem 0 7rem;
+  background: var(--surface);
+}
+.completed-reference-head {
+  max-width: 760px;
+  margin-bottom: 3rem;
+}
+.completed-reference-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4.8vw, 4rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--navy);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+.completed-reference-title::after {
+  content: '';
+  display: block;
+  width: 68px;
+  height: 2px;
+  background: #2f8d46;
+  margin-top: 1rem;
+}
+.completed-reference-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+.completed-reference-card {
+  min-height: 190px;
+  padding: 1.7rem;
+  background: rgba(255,255,255,0.88);
+  border: 1px solid var(--surf-high);
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+}
+.completed-reference-card:hover {
+  transform: translateY(-3px);
+  background: var(--white);
+  box-shadow: 0 20px 50px rgba(0,31,77,0.08);
+}
+.completed-reference-card time {
+  display: inline-flex;
+  margin-bottom: 1.4rem;
+  padding: 0.35rem 0.75rem;
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.completed-reference-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--navy);
+  line-height: 1.1;
+  margin-bottom: 0.8rem;
+}
+.completed-reference-card p {
+  color: var(--ink-muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  font-weight: 300;
+}
+@media (max-width: 900px) {
+  .projects-reference-head,
+  .project-content-grid,
+  .completed-reference-grid { grid-template-columns: 1fr; }
+  .projects-reference-head { gap: 1.5rem; }
+}
+@media (max-width: 560px) {
+  .project-content-card { grid-template-columns: 1fr; }
+  .project-content-tags { justify-content: flex-start; margin-bottom: 1rem; }
+}
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+/* ── PAGE HERO ── */
+.page-hero {
+  position: relative;
+  height: 560px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: var(--navy);
+}
+.page-hero-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; opacity: 0.38;
+}
+.page-hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, var(--navy) 30%, rgba(0,31,77,0.5) 70%, transparent);
+}
+.page-hero-content {
+  position: relative; z-index: 2;
+  padding-bottom: 5rem; padding-top: 76px; width: 100%;
+}
+.page-hero-label { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+.page-hero-label-line { width: 32px; height: 1px; background: var(--amber-bright); }
+.page-hero-label-text { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--amber-dim); }
+.page-hero-h1 { font-family: var(--font-display); font-size: clamp(3rem, 7vw, 6rem); font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; color: var(--white); line-height: 0.88; max-width: 700px; }
+.page-hero-h1 em { font-style: normal; color: var(--amber-bright); }
+.breadcrumb { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; }
+.breadcrumb a, .breadcrumb span { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); transition: color var(--transition); }
+.breadcrumb a:hover { color: rgba(255,255,255,0.7); }
+.breadcrumb .sep { color: rgba(255,255,255,0.15); }
+.breadcrumb .current { color: var(--amber-dim); }
+
+/* ── FILTER BAR ── */
+.filter-bar {
+  padding: 3rem 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--surf-mid);
+  position: sticky;
+  top: 76px;
+  z-index: 50;
+}
+.filter-bar-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.filter-btns {
+  display: flex;
+  gap: 0.25rem;
+}
+.filter-btn {
+  padding: 0.5rem 1.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all var(--transition);
+  cursor: pointer;
+}
+.filter-btn:hover { color: var(--navy); border-color: var(--surf-high); }
+.filter-btn.active {
+  color: var(--white);
+  background: var(--navy);
+  border-color: var(--navy);
+}
+.filter-count {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* ── FEATURED PROJECT ── */
+.featured-project {
+  padding: 5rem 0;
+  background: var(--surface);
+}
+.featured-inner {
+  display: grid;
+  grid-template-columns: 8fr 4fr;
+  gap: 4rem;
+  align-items: center;
+}
+@media (max-width: 900px) { .featured-inner { grid-template-columns: 1fr; } }
+.featured-img-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.featured-img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+.featured-img-wrap:hover .featured-img { transform: scale(1.03); }
+.featured-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0,31,77,0.85) 0%, transparent 55%);
+  display: flex;
+  align-items: flex-end;
+  padding: 3rem;
+}
+.featured-overlay-content { max-width: 480px; }
+.featured-cat {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--amber-dim);
+  margin-bottom: 0.75rem;
+}
+.featured-title {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
+}
+.featured-desc {
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+.featured-meta {
+  display: flex;
+  gap: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  padding-top: 1.25rem;
+  flex-wrap: wrap;
+}
+.featured-meta-item {}
+.featured-meta-label {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 0.2rem;
+}
+.featured-meta-val {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--white);
+}
+.featured-side {}
+.featured-side-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--amber-bright);
+  margin-bottom: 1.25rem;
+}
+.featured-side-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--navy);
+  line-height: 1.05;
+  margin-bottom: 1rem;
+}
+.featured-side-text {
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--ink-muted);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+/* ── PROJECTS GRID ── */
+.projects-grid-section {
+  padding: 5rem 0 7rem;
+  background: var(--surf-low);
+}
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+@media (max-width: 1100px) { .projects-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .projects-grid { grid-template-columns: 1fr; } }
+.project-card {
+  background: var(--surface);
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s, opacity 0.4s;
+  cursor: pointer;
+}
+.project-card:hover { transform: translateY(-4px); box-shadow: 0 24px 60px rgba(0,31,77,0.12); }
+.project-card-img-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.project-card-img {
+  width: 100%;
+  aspect-ratio: 3/2;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.project-card:hover .project-card-img { transform: scale(1.07); }
+.project-card-cat-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: var(--navy);
+  color: var(--white);
+  padding: 0.3rem 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.project-card-status {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255,255,255,0.9);
+  padding: 0.3rem 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.project-card-status .dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+.project-card-status.completed .dot { background: var(--amber); }
+.project-card-body {
+  padding: 1.5rem;
+}
+.project-card-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--navy);
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+.project-card-desc {
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--ink-muted);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+.project-card-stats {
+  display: flex;
+  gap: 1.5rem;
+  border-top: 1px solid var(--surf-mid);
+  padding-top: 1rem;
+}
+.project-card-stat-val {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--navy);
+}
+.project-card-stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-top: 0.1rem;
+}
+.project-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+.project-card-tag {
+  padding: 0.2rem 0.55rem;
+  background: var(--surf-low);
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+/* ── STATS STRIP ── */
+.stats-strip {
+  padding: 5rem 0;
+  background: var(--navy);
+}
+.stats-strip-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+@media (max-width: 800px) { .stats-strip-grid { grid-template-columns: 1fr 1fr; } }
+.stats-strip-item {
+  padding: 2rem 2.5rem;
+  border-left: 1px solid rgba(255,255,255,0.08);
+}
+.stats-strip-item:first-child { border-left: none; }
+.stats-strip-num {
+  font-family: var(--font-display);
+  font-size: 3.2rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  line-height: 1;
+}
+.stats-strip-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-top: 0.5rem;
+}
+
+/* ── CTA ── */
+.projects-cta {
+  padding: 7rem 0;
+  background: var(--surface);
+  text-align: center;
+}
+.projects-cta-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: var(--navy);
+  line-height: 0.95;
+  margin-bottom: 1.25rem;
+}
+.projects-cta-sub {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--ink-muted);
+  max-width: 500px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.7;
+}
+.projects-cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+</style>
+<link href="styles.css" rel="stylesheet"/>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="assets/brand/vensar-logo.png" alt="Vensar"/></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="clients.html">Clients</a></li>
+      <li><a href="safety.html">Safety</a></li>
+      <li><a href="terms.html">Terms</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="contact.html" class="nav-cta">Request Quote</a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="nav-mobile">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="projects.html">Projects</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="clients.html">Clients</a>
+    <a href="safety.html">Safety</a>
+    <a href="terms.html">Terms</a>
+    <a href="contact.html" class="nav-cta">Request Quote</a>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <img class="page-hero-img" src="assets/gallery/gallery-19.jpg" alt="Vensar projects"/>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content container">
+    <div class="breadcrumb anim-fade-in delay-1">
+      <a href="index.html">Home</a>
+      <span class="sep">/</span>
+      <span class="current">Projects</span>
+    </div>
+    <div class="page-hero-label anim-fade-up delay-1">
+      <span class="page-hero-label-line"></span>
+      <span class="page-hero-label-text">Projects</span>
+    </div>
+    <h1 class="page-hero-h1 anim-fade-up delay-2">Complex<br/><em>Infrastructure.</em></h1>
+  </div>
+</section>
+
+<!-- ── PROJECTS CONTENT GRID ── -->
+<section class="projects-reference">
+  <div class="container">
+    <div class="projects-reference-head reveal">
+      <div>
+        <span class="section-label">Ongoing Projects</span>
+        <h2 class="projects-reference-title">Complex infrastructure, organized into clear work fronts.</h2>
+        <p class="projects-reference-copy">Vensar's portfolio spans tunnelling, metro corridors, canals, public buildings, steel infrastructure and underground mining with disciplined planning and site control.</p>
+      </div>
+      <div class="project-snapshot-list" aria-label="Project categories">
+        <div class="project-snapshot-item"><strong>Rail + Metro</strong><span>Tunnels, stations and urban corridors</span></div>
+        <div class="project-snapshot-item"><strong>Water + Canal</strong><span>Irrigation links and public systems</span></div>
+        <div class="project-snapshot-item"><strong>Industrial</strong><span>Steel, mining and power packages</span></div>
+      </div>
+    </div>
+    <div class="project-content-grid">
+      <article class="project-content-card reveal reveal-delay-0"><div class="project-content-index">01</div><div><div class="project-content-tags"><span class="project-content-tag type">Rail + road</span><span class="project-content-tag">Manipur</span></div><h3>Tupul-Imphal BG tunnels and road connectivity works</h3><p>NF Railway / SASEC corridor</p></div></article>
+      <article class="project-content-card reveal reveal-delay-1"><div class="project-content-index">02</div><div><div class="project-content-tags"><span class="project-content-tag type">Rail tunnels</span><span class="project-content-tag">Mizoram</span></div><h3>Bairabi-Sairang tunnel and cut-and-cover packages</h3><p>NF Railway</p></div></article>
+      <article class="project-content-card reveal reveal-delay-2"><div class="project-content-index">03</div><div><div class="project-content-tags"><span class="project-content-tag type">Mountain rail</span><span class="project-content-tag">Jammu</span></div><h3>Tunnel T-13, part T-14, station yard and bridge works</h3><p>Konkan Railway Corporation</p></div></article>
+      <article class="project-content-card reveal reveal-delay-3"><div class="project-content-index">04</div><div><div class="project-content-tags"><span class="project-content-tag type">Metro</span><span class="project-content-tag">Delhi</span></div><h3>Twin tunnel works for Janakpuri West to R.K. Ashram corridor</h3><p>DMRCL</p></div></article>
+      <article class="project-content-card reveal reveal-delay-0"><div class="project-content-index">05</div><div><div class="project-content-tags"><span class="project-content-tag type">Irrigation</span><span class="project-content-tag">Telangana</span></div><h3>SRLIP to Paleru link canal earthwork, embankment and lining</h3><p>I & CAD, Telangana</p></div></article>
+      <article class="project-content-card reveal reveal-delay-1"><div class="project-content-index">06</div><div><div class="project-content-tags"><span class="project-content-tag type">Public buildings</span><span class="project-content-tag">Andhra Pradesh</span></div><h3>Pollution Control Board, auditorium and IIIT academic buildings</h3><p>APSPHCL</p></div></article>
+      <article class="project-content-card reveal reveal-delay-2"><div class="project-content-index">07</div><div><div class="project-content-tags"><span class="project-content-tag type">Industrial</span><span class="project-content-tag">Karnataka</span></div><h3>Major industrial buildings for steel manufacturing operations</h3><p>JSW Steel Limited</p></div></article>
+      <article class="project-content-card reveal reveal-delay-3"><div class="project-content-index">08</div><div><div class="project-content-tags"><span class="project-content-tag type">Mining</span><span class="project-content-tag">Maharashtra</span></div><h3>Walni underground mine development and operating assignment</h3><p>Western Coalfields Limited</p></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMPLETED PROJECTS ── -->
+<section class="completed-reference">
+  <div class="container">
+    <div class="completed-reference-head reveal">
+      <span class="section-label">Completed Projects</span>
+      <h2 class="completed-reference-title">A delivery record built over hospitals, rail tunnels, power works and civic assets.</h2>
+    </div>
+    <div class="completed-reference-grid">
+      <article class="completed-reference-card reveal reveal-delay-0"><time>2000</time><h3>District Government Hospital extension and renovation</h3><p>Government of Andhra Pradesh</p></article>
+      <article class="completed-reference-card reveal reveal-delay-1"><time>2002</time><h3>SBI staff training college at Gachibowli, Hyderabad</h3><p>SBI</p></article>
+      <article class="completed-reference-card reveal reveal-delay-2"><time>2008</time><h3>Yokogawa Blue Star software building at Electronic City</h3><p>Yokogawa India Limited</p></article>
+      <article class="completed-reference-card reveal reveal-delay-0"><time>2011</time><h3>Swarna Jayanthi Commercial Complex at Ameerpet</h3><p>HMDA Telangana</p></article>
+      <article class="completed-reference-card reveal reveal-delay-1"><time>2013</time><h3>RGUKT IIIT building at Basara, Adilabad District</h3><p>TSMSIDC</p></article>
+      <article class="completed-reference-card reveal reveal-delay-2"><time>2016</time><h3>Jiribam-Tupul-Imphal railway tunnel packages</h3><p>NF Railway</p></article>
+      <article class="completed-reference-card reveal reveal-delay-0"><time>2018</time><h3>Data center fit-out complex at Hyderabad</h3><p>Engineers India Limited / SBI</p></article>
+      <article class="completed-reference-card reveal reveal-delay-1"><time>2022</time><h3>864 2-BHK housing units in GHMC Hyderabad</h3><p>GHMC Telangana</p></article>
+      <article class="completed-reference-card reveal reveal-delay-2"><time>2022</time><h3>Realigned HRT restoration for Sewa-II Power Station</h3><p>NHPC</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="projects-cta">
+  <div class="container">
+    <span class="section-label reveal">Start Building</span>
+    <h2 class="projects-cta-title reveal reveal-delay-1">Build the next<br/>assignment.</h2>
+    <p class="projects-cta-sub reveal reveal-delay-2">Connect with Vensar for infrastructure, buildings, industrial civil packages and development assignments.</p>
+    <div class="projects-cta-btns reveal reveal-delay-3">
+      <a href="contact.html" class="btn-primary">Contact Team</a>
+      <a href="services.html" class="btn-outline">Our Capabilities</a>
+    </div>
+  </div>
+</section>
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand footer-brand-logo"><img src="assets/brand/vensar-logo.png" alt="Vensar"/></div>
+        <p class="footer-tagline">Civil infrastructure, buildings, industrial works and development projects delivered with disciplined planning, safety-led execution and dependable site control.</p>
+        <div class="footer-social"><a href="#">LI</a><a href="#">IG</a><a href="#">TW</a></div>
+        <div class="footer-duns"><script language="JavaScript" src="https://dunsregistered.dnb.com" type="text/javascript"></script></div>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigate</div>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="clients.html">Clients</a></li>
+          <li><a href="safety.html">Safety</a></li>
+          <li><a href="terms.html">Terms</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Core Work</div>
+        <ul class="footer-links">
+          <li><a href="services.html">Civil Infrastructure</a></li>
+          <li><a href="services.html">Rail &amp; Metro</a></li>
+          <li><a href="services.html">Power &amp; Mining</a></li>
+          <li><a href="safety.html">EHS Controls</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Corporate Office</div>
+        <p class="footer-address">8-2-12/76/1/B, 3rd Floor<br/>Ashoka Hitech Chambers, Road No 2<br/>Banjara Hills, Hyderabad - 500034</p>
+        <div class="footer-contact">
+          <a href="tel:+9104023551699"><span class="material-symbols-outlined">call</span>+91 040 23551699</a>
+          <a href="mailto:info@vensar.com"><span class="material-symbols-outlined">mail</span>info@vensar.com</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Vensar Constructions. All Rights Reserved.</span>
+      <div class="footer-legal"><a href="terms.html">Terms</a><a href="#">Accessibility</a><a href="#">Cookies</a></div>
+    </div>
+  </div>
+</footer>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const ongoingProjects = [
+    ["Manipur", "NF Railway (Construction)", "Construction of Single line BG Tunnel No. 12, including Adit and Adit-2 works, between Tupul-Imphal for the Jiribam-Tupul new railway line."],
+    ["Manipur", "NF Railway (Construction)", "Construction of Parallel Safety Tunnel of T-12 between Tupul-Imphal for the Jiribam-Imphal new railway line project."],
+    ["Manipur", "NF Railway (Construction)", "Construction of Imphal-Kangchup-Tamenglong Road under SASEC Road Connectivity Investment Program, ADB Loan No. 3118-IND Tranche-1."],
+    ["Manipur", "NF Railway (Construction)", "Construction of fibre lining for Adit tunnels of Tunnel Nos. 1, 3, 7, 6A, 6B, 10 and 12 between Vangichungpao and Khongsang."],
+    ["Mizoram", "NF Railway (Construction)", "Construction of Single Line BG Tunnel 15A, Tunnel 15B and Tunnel 15C with ancillary works between Hortoki and Mualkhang on the Bairabi-Sairang line."],
+    ["Mizoram", "NF Railway (Construction)", "Construction of Single Line BG Tunnel 14A, two-line BG Tunnel 12A and balance work of Tunnel 11C between Hortoki and Mualkhang."],
+    ["Mizoram", "NF Railway (Construction)", "Construction of UG Tunnel No. 5, cut-and-cover tunnel packages and balance tunnel works between Bairabi and Hortoki."],
+    ["Mizoram", "NF Railway (Construction)", "Construction of cut-and-cover tunnels 1C and 2A, RCC box works and UG Tunnel No. 2 lining between Bairabi and Hortoki."],
+    ["Jammu", "Konkan Railway Corporation Limited", "Construction of Tunnel T-13, part Tunnel T-14, Basindadhar station yard, approach road and Bridge No. 60 on the Katra-Banihal section."],
+    ["Delhi", "DMRCL", "Design and construction of twin tunnel works from Janakpuri West to R. K. Ashram corridor for Delhi Metro Phase IV."],
+    ["Telangana", "I & CAD, Telangana", "SRLIP Package No. 14: SRLIP to Paleru Link Canal earthwork, embankment and CC lining from Km 10.50 to Km 39.50."],
+    ["Andhra Pradesh", "APSPHCL Andhra Pradesh", "Construction of Andhra Pradesh Pollution Control Board office building at Tirupathi."],
+    ["Andhra Pradesh", "APSPHCL Andhra Pradesh", "Construction of auditorium at R.K. Valley, IIIT Idupulapaya, Y.S.R. Kadapa District."],
+    ["Andhra Pradesh", "APSPHCL Andhra Pradesh", "Construction of G+3 classroom complex at IIIT Srikakulam."],
+    ["Karnataka", "JSW Steel Limited", "Major industrial buildings for JSW Steel Limited, including coke oven, steel making shop, blast furnace and hot strip mill facilities."],
+    ["Maharashtra", "Western Coalfields Limited", "Walni underground mine development cum operating assignment with 25-year contract period in the Silewara-Kamptee Coalfield."],
+    ["Jharkhand", "Eastern Coalfields Limited", "Gopinathpur underground mine development cum operating assignment in the Mugma basin of Raniganj Coalfield, Dhanbad District."],
+    ["Jharkhand", "Bharat Coking Coal Limited", "Loyabad Colliery underground mine development assignment in the central part of Jharia Coalfield, Dhanbad District."],
+    ["West Bengal", "Eastern Coalfields Limited", "Girmint-KD Incline underground mine development assignment in the central part of Raniganj Coalfield, Burdwan District."]
+  ];
+  const completedProjects = [
+    ["2000", "Construction extension and renovation of District Government Hospital at Machilipatnam", "Government of Andhra Pradesh"],
+    ["2002", "Construction of staff training college at SBIRD, Gachibowli, Hyderabad", "SBI"],
+    ["2002", "Construction of Veterinary Science College building at Gannavaram, Krishna District", "Government of Andhra Pradesh"],
+    ["2003", "Construction of Minerva Towers at S.D. Road, Secunderabad", "Private"],
+    ["2003", "Construction of Government Mental Care Hospital at Visakhapatnam", "N.T.R. Health University"],
+    ["2005", "Improvement and infrastructure facilities for Urban Local Bodies of Gulbarga Division", "KUWSDB"],
+    ["2008", "Construction of building for Gandhi Medical College at Musheerbad, Secunderabad", "Government of Telangana"],
+    ["2008", "Construction of software building for Yokogawa Blue Star at Electronic City, Bangalore", "Yokogawa India Limited"],
+    ["2009", "Construction of 1824 flats in G+3 pattern with basic infrastructure at Kowkur, Malkajgiri", "Private"],
+    ["2011", "Construction of Swarna Jayanthi Commercial Complex at Ameerpet, Hyderabad", "HMDA Telangana"],
+    ["2011", "Construction of 66 KV S.C on D.C towers from 220 KV SRS Davangere to 400 KV Guttur sub-station", "KPTCL"],
+    ["2012", "Construction of 110 KV SC line on DC towers in Shimoga / Haveri District on turnkey basis", "KPTCL"],
+    ["2013", "Construction of building for RGUKT IIIT at Basara in Adilabad District, Telangana", "TSMSIDC"],
+    ["2013", "Augmentation of water supply facilities with PSC and MS pipes for Basavakalyan town, Bidar District", "KRWSSA"],
+    ["2013", "Construction of 220 KV DC line from RTPS to Raichur near Yermarus limits and Raichur link works", "KPTCL"],
+    ["2014", "Upgradation of substations at Turvihal with materials, equipment, testing and commissioning", "KPTCL"],
+    ["2014", "Construction of 76.15 KMs transmission works including materials, erection and civil works", "KPTCL"],
+    ["2015", "Construction of 110 KV S.C on D.C towers from proposed 220 KV sub-station at Shiralakoppa", "KPTCL"],
+    ["2016", "Construction of adit tunnel for Tunnel No. 3 at Portal-2 and ancillary works in Manipur", "N.F. Railway (Construction)"],
+    ["2016", "Construction of adit tunnel for Tunnel No. 3 at Portal-1 and ancillary works in Manipur", "N.F. Railway (Construction)"],
+    ["2016", "Construction of Single Line BG Tunnel No. 13 and Tunnel No. 14 between Jiribam and Tupul", "N.F. Railway (Construction)"],
+    ["2016", "Construction of NF Railway Single Tunnel No. 13, Jiribam to Imphal, Manipur", "N.F. Railway"],
+    ["2016", "Construction of Single Tunnel No. 15, Jiribam to Imphal, Manipur", "N.F. Railway"],
+    ["2016", "Tunnel 3 Adit on New BG Railway Line from Jiribam to Tupul-Imphal, Manipur", "N.F. Railway"],
+    ["2016", "Construction of Single Line BG Tunnel No. 15 and Tunnel No. 16 between Jiribam and Tupul", "N.F. Railway (Construction)"],
+    ["2017", "Restoration and repair of damaged civil structures at 2 x 38MW Phata Hydro Electric Power Project", "Lanco Infratech Ltd"],
+    ["2018", "Construction of commercial complex for Purva Summit in Hitech City, Hyderabad", "Puravankara Ltd"],
+    ["2018", "Composite fit-out works for Data Center Complex at Hyderabad for State Bank of India", "Engineers India Limited"],
+    ["2018", "Construction of RCC tunnel for conveyance of water along Right Main Canal from RD 5.32 Km to RD 5.74 Km", "WRD Manipur"],
+    ["2018", "Construction of Single Line BG Tunnel No. 1 between Belonia and Jolaibari on AGTIL-Sabroom new line", "N.F. Railway (Construction)"],
+    ["2019", "Construction of Single Line BG Tunnel No. 7 between Tupul-Imphal for Jiribam-Imphal new railway line", "N.F. Railway (Construction)"],
+    ["2020", "Establishment of 2x20 MVA, 110/33 KV and 1x10 MVA, 110/11 KV substation at Modavu with 110 KV line", "KPTCL"],
+    ["2021", "Construction of Single Line BG Tunnel No. 4 between Tupul-Imphal for Jiribam-Imphal railway project", "N.F. Railway (Construction)"],
+    ["2021", "Construction of Single Line BG Tunnel No. 1 and Tunnel No. 2 between Tupul-Imphal", "N.F. Railway (Construction)"],
+    ["2021", "Construction of Single Line BG Tunnel No. 3 between Tupul-Imphal for Jiribam-Imphal railway project", "N.F. Railway (Construction)"],
+    ["2022", "Construction of 864 2-BHK houses in GHMC Hyderabad", "GHMC Telangana"],
+    ["2022", "Execution of approximately 720 RM stretch of realigned HRT for restoration of Sewa-II Power Station", "NHPC"]
+  ];
+  const ongoingGrid = document.querySelector('.project-content-grid');
+  if (ongoingGrid) {
+    ongoingGrid.innerHTML = ongoingProjects.map(([region, client, title], index) => `<article class="project-content-card reveal reveal-delay-${index % 4}"><div class="project-content-index">${String(index + 1).padStart(2, '0')}</div><div><div class="project-content-tags"><span class="project-content-tag type">Ongoing</span><span class="project-content-tag">${region}</span></div><h3>${title}</h3><p>${client}</p></div></article>`).join('');
+  }
+  const completedGrid = document.querySelector('.completed-reference-grid');
+  if (completedGrid) {
+    completedGrid.innerHTML = completedProjects.map(([year, title, client], index) => `<article class="completed-reference-card reveal reveal-delay-${index % 3}"><time>${year}</time><h3>${title}</h3><p>${client}</p></article>`).join('');
+  }
+});
+</script>
+<script>/* vensar.js — shared across all pages */
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ── Nav scroll shadow ── */
+  const nav = document.querySelector('.nav');
+  if (nav) {
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+  }
+
+  /* ── Mobile nav toggle ── */
+  const toggle = document.querySelector('.nav-toggle');
+  const mobileNav = document.querySelector('.nav-mobile');
+  if (toggle && mobileNav) {
+    toggle.addEventListener('click', () => {
+      toggle.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+    // close on link click
+    mobileNav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        toggle.classList.remove('open');
+        mobileNav.classList.remove('open');
+      });
+    });
+  }
+
+  /* ── Active nav link ── */
+  const current = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-links a, .nav-mobile a').forEach(a => {
+    const href = a.getAttribute('href');
+    if (href === current) a.classList.add('active');
+  });
+
+  /* ── Scroll reveal ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* ── Counter animation ── */
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
+
+  function animateCounter(el) {
+    const target = parseFloat(el.dataset.count);
+    const suffix = el.dataset.suffix || '';
+    const prefix = el.dataset.prefix || '';
+    const decimals = el.dataset.decimals ? parseInt(el.dataset.decimals) : 0;
+    const duration = 1400;
+    const start = performance.now();
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = (target * eased).toFixed(decimals);
+      el.textContent = prefix + value + suffix;
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+
+  /* ── Parallax hero image (subtle) ── */
+  const heroBg = document.querySelector('.hero-parallax');
+  if (heroBg) {
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      heroBg.style.transform = `translateY(${y * 0.28}px)`;
+    }, { passive: true });
+  }
+
+  /* ── Project filter (projects page) ── */
+  const filterBtns = document.querySelectorAll('[data-filter]');
+  const projectCards = document.querySelectorAll('[data-category]');
+  if (filterBtns.length) {
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        projectCards.forEach(card => {
+          const show = filter === 'all' || card.dataset.category === filter;
+          card.style.opacity = show ? '1' : '0.2';
+          card.style.pointerEvents = show ? 'auto' : 'none';
+          card.style.transform = show ? 'scale(1)' : 'scale(0.97)';
+        });
+      });
+    });
+  }
+
+  /* ── Form interaction (contact page) ── */
+  document.querySelectorAll('.form-field input, .form-field textarea').forEach(field => {
+    field.addEventListener('focus', () => {
+      field.closest('.form-field').classList.add('focused');
+    });
+    field.addEventListener('blur', () => {
+      field.closest('.form-field').classList.remove('focused');
+      if (field.value.trim()) field.closest('.form-field').classList.add('filled');
+      else field.closest('.form-field').classList.remove('filled');
+    });
+  });
+
+});
+</script>
+</body>
+</html>
