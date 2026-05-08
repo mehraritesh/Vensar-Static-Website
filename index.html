@@ -1115,31 +1115,22 @@ input, textarea, select { font-family: var(--font-body); }
 <!-- ── HERO ── -->
 <section class="hero hero-carousel">
   <div class="hero-carousel-slides">
-    <div class="hero-slide is-active" data-title="Specialized in the development of sustainable infrastructure and" data-accent="building constructions" data-copy="Vensar is promoted by qualified, experienced and dedicated people and has earned high accolades for competence, dedication and quality over the past 25 years.">
-      <img src="assets/slider/image_slider.jpg" alt="Vensar infrastructure project hero"/>
+    <div class="hero-slide is-active">
+      <img src="assets/slider/slider_front.png" alt="Vensar first hero slide"/>
     </div>
-    <div class="hero-slide" data-title="Skilled and experienced in all aspects of" data-accent="Infrastructure" data-copy="We pride ourselves on our expertise in buildings, tunnelling, roads and electrical lines, supported by flexible project management systems for a wide range of clients.">
+    <div class="hero-slide">
       <img src="assets/slider/image_slider2.jpg" alt="Vensar project site hero"/>
     </div>
-    <div class="hero-slide" data-title="Technology-driven growth with" data-accent="cost-effective solutions" data-copy="Keeping abreast with the latest has been our cornerstone, helping Vensar embrace change, diversify operations and continue delivering value-driven construction outcomes.">
+    <div class="hero-slide">
       <img src="assets/slider/image_slider3.jpg" alt="Vensar bridge and infrastructure hero"/>
     </div>
   </div>
   <div class="hero-carousel-overlay"></div>
-  <div class="hero-content container">
-    <div class="hero-caption-panel anim-fade-up">
-      <p class="hero-caption-kicker">Vensar Constructions</p>
-      <h1 class="hero-h1" id="hero-title">Specialized in the development of infrastructure and <em>building constructions</em></h1>
-      <p class="hero-sub" id="hero-copy">Vensar is promoted by qualified, experienced and dedicated people and has earned high accolades for competence, dedication and quality over the past 25 years.</p>
-      <div class="hero-actions">
-        <a href="projects.html" class="btn-primary">View Projects</a>
-        <a href="services.html" class="btn-ghost hero-ghost">Our Business</a>
-      </div>
-      <div class="hero-dots" aria-label="Hero slides">
-        <button class="hero-dot is-active" data-slide="0" aria-label="Slide 1"></button>
-        <button class="hero-dot" data-slide="1" aria-label="Slide 2"></button>
-        <button class="hero-dot" data-slide="2" aria-label="Slide 3"></button>
-      </div>
+  <div class="hero-content">
+    <div class="hero-dots" aria-label="Hero slides">
+      <button class="hero-dot is-active" type="button" data-slide="0" aria-label="Slide 1" aria-current="true"></button>
+      <button class="hero-dot" type="button" data-slide="1" aria-label="Slide 2" aria-current="false"></button>
+      <button class="hero-dot" type="button" data-slide="2" aria-label="Slide 3" aria-current="false"></button>
     </div>
   </div>
 </section>
@@ -1149,28 +1140,28 @@ input, textarea, select { font-family: var(--font-body); }
   <div class="container">
     <div class="stats-board-grid reveal">
       <article class="stats-board-item">
-        <span class="stats-board-label">Company Legacy</span>
-        <strong>Since 25+ Years</strong>
+        <span class="stats-board-label">Established in</span>
+        <strong data-count="1992" data-start="1">1992</strong>
       </article>
       <article class="stats-board-item">
-        <span class="stats-board-label">Development Focus</span>
-        <strong>Sustainable Infrastructure</strong>
+        <span class="stats-board-label">Projects Completed</span>
+        <strong data-count="100" data-start="1" data-suffix="+">100+</strong>
       </article>
-      <article class="stats-board-item">
+      <!-- <article class="stats-board-item">
         <span class="stats-board-label">Core Work</span>
         <strong>Building Constructions</strong>
+      </article> -->
+      <article class="stats-board-item">
+        <span class="stats-board-label">Active Projects</span>
+        <strong data-count="70" data-start="1" data-suffix="+">70+</strong>
       </article>
       <article class="stats-board-item">
-        <span class="stats-board-label">Reputation</span>
-        <strong>Quality Service</strong>
+        <span class="stats-board-label">Clients & Partners</span>
+        <strong data-count="75" data-start="1" data-suffix="+">75+</strong>
       </article>
       <article class="stats-board-item">
-        <span class="stats-board-label">Delivery Standard</span>
-        <strong>On-Time Execution</strong>
-      </article>
-      <article class="stats-board-item">
-        <span class="stats-board-label">Commercial Value</span>
-        <strong>Competitive Price</strong>
+        <span class="stats-board-label">Years Experience</span>
+        <strong data-count="30" data-start="1" data-suffix="+">30+</strong>
       </article>
     </div>
   </div>
@@ -1401,10 +1392,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { threshold: 0.5 });
 
-  document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const startValue = Number(el.dataset.start || 0);
+    const suffix = el.dataset.suffix || '';
+    const prefix = el.dataset.prefix || '';
+    el.textContent = `${prefix}${startValue}${suffix}`;
+    counterObserver.observe(el);
+  });
 
   function animateCounter(el) {
     const target = parseFloat(el.dataset.count);
+    const startValue = parseFloat(el.dataset.start || 0);
     const suffix = el.dataset.suffix || '';
     const prefix = el.dataset.prefix || '';
     const decimals = el.dataset.decimals ? parseInt(el.dataset.decimals) : 0;
@@ -1414,7 +1412,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      const value = (target * eased).toFixed(decimals);
+      const currentValue = startValue + ((target - startValue) * eased);
+      const value = currentValue.toFixed(decimals);
       el.textContent = prefix + value + suffix;
       if (progress < 1) requestAnimationFrame(update);
     }
@@ -1424,24 +1423,20 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ── Home hero carousel ── */
   const heroSlides = Array.from(document.querySelectorAll('.hero-slide'));
   const heroDots = Array.from(document.querySelectorAll('.hero-dot'));
-  const heroTitle = document.getElementById('hero-title');
-  const heroCopy = document.getElementById('hero-copy');
   let heroIndex = 0;
   let heroTimer = null;
 
   function setHeroSlide(index) {
-    if (!heroSlides.length || !heroDots.length || !heroTitle || !heroCopy) return;
+    if (!heroSlides.length || !heroDots.length) return;
 
     heroIndex = (index + heroSlides.length) % heroSlides.length;
-    const activeSlide = heroSlides[heroIndex];
     heroSlides.forEach((slide, slideIndex) => {
       slide.classList.toggle('is-active', slideIndex === heroIndex);
     });
     heroDots.forEach((dot, dotIndex) => {
       dot.classList.toggle('is-active', dotIndex === heroIndex);
+      dot.setAttribute('aria-current', String(dotIndex === heroIndex));
     });
-    heroTitle.innerHTML = `${activeSlide.dataset.title} <em>${activeSlide.dataset.accent}</em>`;
-    heroCopy.textContent = activeSlide.dataset.copy || '';
   }
 
   function startHeroCarousel() {
@@ -1449,7 +1444,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (heroTimer) window.clearInterval(heroTimer);
     heroTimer = window.setInterval(() => {
       setHeroSlide(heroIndex + 1);
-    }, 4200);
+    }, 5000);
   }
 
   heroDots.forEach((dot, index) => {
